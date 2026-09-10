@@ -8,6 +8,7 @@
   "files": [
     "dist"
   ],
+  "homepage": "https://kaelyx.dev/ts-kit/",
   "engines": {
     "node": ">=22"
   },
