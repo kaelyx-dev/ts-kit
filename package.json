@@ -1,11 +1,13 @@
 {
   "name": "@kaelyx/ts-kit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Small TypeScript utility functions.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "engines": {
     "node": ">=22"
   },
