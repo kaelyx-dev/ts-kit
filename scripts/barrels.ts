@@ -26,7 +26,7 @@ const kebabToPascal = (name: string): string => camelToPascal(kebabToCamel(name)
 
 const listCategories = (): string[] =>
   readdirSync(srcDir)
-    .filter((name) => name !== 'types' && isDirectory(join(srcDir, name)))
+    .filter((name) => name !== 'types' && name !== 'internal' && isDirectory(join(srcDir, name)))
     .sort()
 
 const listFunctions = (category: string): string[] =>
