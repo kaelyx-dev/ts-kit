@@ -1,0 +1,15 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts", "src/types/index.ts"],
+  "entryPointStrategy": "resolve",
+  "out": "docs/api",
+  "docsRoot": "docs",
+  "plugin": ["typedoc-plugin-markdown", "typedoc-vitepress-theme"],
+  "categorizeByGroup": true,
+  "defaultCategory": "Other",
+  "readme": "none",
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": false
+  }
+}

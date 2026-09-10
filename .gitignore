@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+docs/api/
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+docs/contributing.md
+docs/ai-policy.md
+*.log
+.DS_Store

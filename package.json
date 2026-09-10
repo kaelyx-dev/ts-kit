@@ -1,0 +1,65 @@
+{
+  "name": "@kaelyx/ts-kit",
+  "version": "0.1.0",
+  "description": "Small TypeScript utility functions.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "files": ["dist"],
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaelyx-dev/ts-kit.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "new": "tsx scripts/new.ts",
+    "barrels": "tsx scripts/barrels.ts",
+    "barrels:check": "tsx scripts/barrels.ts --check",
+    "build": "tsdown",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "docs": "tsx scripts/copy-docs.ts && typedoc",
+    "docs:check": "typedoc --emit none --validation.notDocumented --treatWarningsAsErrors",
+    "docs:dev": "npm run docs && vitepress dev docs",
+    "docs:build": "npm run docs && vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "check": "npm run lint && npm run typecheck && npm run barrels:check && npm run test -- --coverage && npm run docs:check && npm run build && publint && attw --pack --profile esm-only"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.0",
+    "@biomejs/biome": "^1.9.0",
+    "@changesets/cli": "^2.27.0",
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^2.1.0",
+    "publint": "^0.3.0",
+    "tinyglobby": "^0.2.0",
+    "tsdown": "^0.23.0",
+    "tsx": "^4.19.0",
+    "typedoc": "^0.28.0",
+    "typedoc-plugin-markdown": "^4.13.0",
+    "typedoc-vitepress-theme": "^1.1.0",
+    "typescript": "^5.6.0",
+    "vitepress": "^1.6.0",
+    "vitest": "^2.1.0"
+  }
+}
