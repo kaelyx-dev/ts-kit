@@ -10,6 +10,7 @@ const typedocSidebar = existsSync(sidebarPath) ? JSON.parse(readFileSync(sidebar
 export default defineConfig({
   title: '@kaelyx/ts-kit',
   description: 'Small TypeScript utility functions with no dependencies at run time.',
+  base: '/ts-kit/', // served from https://kaelyx.dev/ts-kit/, not the domain root
   themeConfig: {
     nav: [
       { text: 'Guide', link: '/guide/getting-started' },

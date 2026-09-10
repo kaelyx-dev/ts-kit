@@ -8,6 +8,14 @@
   "files": {
     "ignore": ["dist", "node_modules"]
   },
+  "overrides": [
+    {
+      "include": ["package.json"],
+      "formatter": {
+        "enabled": false
+      }
+    }
+  ],
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
