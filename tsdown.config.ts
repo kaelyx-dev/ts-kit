@@ -7,7 +7,7 @@ const entryName = (file: string) => file.replace(/^src\//, '').replace(/\/[^/]+\
 
 const categories = globSync('src/*/index.ts')
 const functions = globSync('src/*/*/*.ts', {
-  ignore: ['**/*.test.ts', '**/*.types.ts'],
+  ignore: ['**/*.test.ts', '**/*.types.ts', 'src/_internal/**'],
 })
 
 export default defineConfig({

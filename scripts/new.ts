@@ -51,7 +51,7 @@ const prompt = async (question: string): Promise<string> => {
   }
 }
 
-const functionTemplate = (name: string): string => {
+const functionTemplate = (category: string, name: string): string => {
   const exportName = kebabToCamel(name)
   return `export type * from './${name}.types'
 
@@ -67,7 +67,7 @@ const functionTemplate = (name: string): string => {
  * ${exportName}() // result
  * \`\`\`
  *
- * @category ${name}
+ * @category ${category}
  */
 export function ${exportName}(input: never): void {
   throw new Error('not implemented')
@@ -140,11 +140,15 @@ const main = async (): Promise<void> => {
   }
 
   mkdirSync(functionDir, { recursive: true })
-  writeFileSync(join(functionDir, `${name}.ts`), functionTemplate(name))
+  writeFileSync(join(functionDir, `${name}.ts`), functionTemplate(category, name))
   writeFileSync(join(functionDir, `${name}.test.ts`), testTemplate(name))
   writeFileSync(join(functionDir, `${name}.types.ts`), typesTemplate(name))
 
-  execFileSync('tsx', [join(root, 'scripts', 'barrels.ts')], { stdio: 'inherit' })
+  // Spawn node directly with tsx's loader hook; avoids relying on the tsx shim being on PATH
+  // and avoids shell:true (which does not escape arguments, an injection risk).
+  execFileSync(process.execPath, ['--import', 'tsx/esm', join(root, 'scripts', 'barrels.ts')], {
+    stdio: 'inherit',
+  })
 
   console.log(`\nCreated @kaelyx/ts-kit/${category}/${name}`)
   console.log(join(functionDir, `${name}.ts`))
