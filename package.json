@@ -25,9 +25,33 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./*": {
-      "types": "./dist/*.d.ts",
-      "default": "./dist/*.js"
+    "./array": {
+      "types": "./dist/array.d.ts",
+      "default": "./dist/array.js"
+    },
+    "./array/concatenate": {
+      "types": "./dist/array/concatenate.d.ts",
+      "default": "./dist/array/concatenate.js"
+    },
+    "./string": {
+      "types": "./dist/string.d.ts",
+      "default": "./dist/string.js"
+    },
+    "./string/exclamationmark": {
+      "types": "./dist/string/exclamationmark.d.ts",
+      "default": "./dist/string/exclamationmark.js"
+    },
+    "./string/fullstop": {
+      "types": "./dist/string/fullstop.d.ts",
+      "default": "./dist/string/fullstop.js"
+    },
+    "./string/questionmark": {
+      "types": "./dist/string/questionmark.d.ts",
+      "default": "./dist/string/questionmark.js"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "default": "./dist/types.js"
     },
     "./package.json": "./package.json"
   },
@@ -35,6 +59,8 @@
     "new": "tsx scripts/new.ts",
     "barrels": "tsx scripts/barrels.ts",
     "barrels:check": "tsx scripts/barrels.ts --check",
+    "exports": "tsx scripts/exports.ts",
+    "exports:check": "tsx scripts/exports.ts --check",
     "build": "tsdown",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -46,7 +72,7 @@
     "docs:dev": "npm run docs && vitepress dev docs",
     "docs:build": "npm run docs && vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "check": "npm run lint && npm run typecheck && npm run barrels:check && npm run test -- --coverage && npm run docs:check && npm run build && publint && attw --pack --profile esm-only"
+    "check": "npm run lint && npm run typecheck && npm run barrels:check && npm run exports:check && npm run test -- --coverage && npm run docs:check && npm run build && publint && attw --pack --profile esm-only"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.0",

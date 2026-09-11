@@ -21,4 +21,5 @@ export default defineConfig({
   treeshake: true,
   clean: true,
   fixedExtension: false,
+  unbundle: true,
 })
