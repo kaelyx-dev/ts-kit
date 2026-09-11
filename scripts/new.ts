@@ -146,9 +146,11 @@ const main = async (): Promise<void> => {
 
   // Spawn node directly with tsx's loader hook; avoids relying on the tsx shim being on PATH
   // and avoids shell:true (which does not escape arguments, an injection risk).
-  execFileSync(process.execPath, ['--import', 'tsx/esm', join(root, 'scripts', 'barrels.ts')], {
-    stdio: 'inherit',
-  })
+  for (const script of ['barrels.ts', 'exports.ts']) {
+    execFileSync(process.execPath, ['--import', 'tsx/esm', join(root, 'scripts', script)], {
+      stdio: 'inherit',
+    })
+  }
 
   console.log(`\nCreated @kaelyx/ts-kit/${category}/${name}`)
   console.log(join(functionDir, `${name}.ts`))

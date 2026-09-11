@@ -1,42 +1,28 @@
 # @kaelyx/ts-kit
 
-A TypeScript utility library. ESM only. A CommonJS project must use a dynamic `import()` call.
 
-Small functions, one per directory. No dependencies at run time. Each function documents its own
-behaviour in its TSDoc block.
+TS-Kit is a small utility library, initially developed by Kaelyx, which aims to make common TypeScript tasks easier and more efficient.
 
-## Everyday commands
+Warning: ESM only package. A CommonJS project must use a dynamic `import()` call
+
+
+## Homepage
+
+The homepage for TS-Kit can be found at [https://kaelyx.dev/ts-kit/](https://kaelyx.dev/ts-kit/).
+
+## Installation
+
+You can install TS-Kit using npm:
 
 ```bash
-npm run new -- <category> <name>  # scaffold a new function
-npm run test:watch                # run tests as you work
-npm run check                     # the one gate: lint, typecheck, barrels, tests, docs, build
+npm install @kaelyx/ts-kit
 ```
 
 ## Usage
 
 ```ts
 import { concatenate } from '@kaelyx/ts-kit/array/concatenate'
-import type { ConcatenateOptions } from '@kaelyx/ts-kit/array/concatenate'
-
-// or, for many types at one time, from one path
-import type { ConcatenateOptions } from '@kaelyx/ts-kit/types'
+const result = concatenate([1, 2], [3, 4]) // [1, 2, 3, 4]
+const result2 = concatenate([5, 6], [6, 7], { unique: true } ) // [5, 6, 7]
 ```
 
-## Structure
-
-One function has one directory. One directory has one function. Every function directory has
-three files: `<name>.ts` (the function), `<name>.test.ts` (its tests) and `<name>.types.ts` (its
-public types). The `index.ts` barrel files are written by `scripts/barrels.ts`, never by hand.
-
-See the categories in `src/` for the available functions, grouped by data type (`array`, `object`,
-`string`, and so on).
-
-## Documentation
-
-The full developer guide and the generated API reference live in `docs/`, built with VitePress:
-
-```bash
-npm run docs:dev    # serve the docs site locally, with the API pages regenerated from TSDoc
-npm run docs:build  # build the static site into docs/.vitepress/dist
-```
