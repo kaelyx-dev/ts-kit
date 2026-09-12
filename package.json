@@ -73,6 +73,10 @@
       "types": "./dist/string/fullstop.d.ts",
       "default": "./dist/string/fullstop.js"
     },
+    "./string/is-json": {
+      "types": "./dist/string/is-json.d.ts",
+      "default": "./dist/string/is-json.js"
+    },
     "./string/questionmark": {
       "types": "./dist/string/questionmark.d.ts",
       "default": "./dist/string/questionmark.js"
