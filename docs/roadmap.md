@@ -49,11 +49,8 @@ Feature-PRs based on the roadmap will take priority.
 - validate
 - valid-email
 - valid-uk-postcode
-- is-json
 
 ### Object
-- from-query-string
-- to-query-string
 - invert
 - omit
 - pick
