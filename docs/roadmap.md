@@ -46,7 +46,9 @@ Feature-PRs based on the roadmap will take priority.
 - pluralise
 - signularise
 - word-count
-
+- validate
+- valid-email
+- valid-uk-postcode
 
 ### Object
 - from-query-string
@@ -91,3 +93,13 @@ Feature-PRs based on the roadmap will take priority.
 ### Functions
 - pipe
 - retry
+
+### Errors
+- MaxRetriesExceededError
+- MaxBackoffExceededError
+- RetryAbortedError
+- RetryableError
+- NonRetryable
+- ValidationError
+- ParseError
+- ConfigurationError
