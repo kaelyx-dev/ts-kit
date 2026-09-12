@@ -33,6 +33,34 @@
       "types": "./dist/array/concatenate.d.ts",
       "default": "./dist/array/concatenate.js"
     },
+    "./object": {
+      "types": "./dist/object.d.ts",
+      "default": "./dist/object.js"
+    },
+    "./object/from-query-string": {
+      "types": "./dist/object/from-query-string.d.ts",
+      "default": "./dist/object/from-query-string.js"
+    },
+    "./object/invert": {
+      "types": "./dist/object/invert.d.ts",
+      "default": "./dist/object/invert.js"
+    },
+    "./object/omit": {
+      "types": "./dist/object/omit.d.ts",
+      "default": "./dist/object/omit.js"
+    },
+    "./object/pick": {
+      "types": "./dist/object/pick.d.ts",
+      "default": "./dist/object/pick.js"
+    },
+    "./object/rename-keys": {
+      "types": "./dist/object/rename-keys.d.ts",
+      "default": "./dist/object/rename-keys.js"
+    },
+    "./object/to-query-string": {
+      "types": "./dist/object/to-query-string.d.ts",
+      "default": "./dist/object/to-query-string.js"
+    },
     "./string": {
       "types": "./dist/string.d.ts",
       "default": "./dist/string.js"

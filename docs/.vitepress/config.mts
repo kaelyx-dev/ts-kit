@@ -76,6 +76,7 @@ export default defineConfig({
             { text: 'Scripts', link: '/guide/scripts' },
             { text: 'Adding a function', link: '/guide/adding-a-function' },
             { text: 'Changesets and releases', link: '/guide/changesets-and-releases' },
+            { text: 'Roadmap', link: '/roadmap' },
           ],
         },
         {
