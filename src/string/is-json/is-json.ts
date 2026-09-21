@@ -2,15 +2,15 @@ export type * from './is-json.types'
 import type { IsJsonParseResult } from './is-json.types'
 
 /**
- * One sentence that says what the function does.
+ * isJson checks if a string is valid JSON and returns the parsed data if it is.
  *
- * @param input - The data. Say what an empty value does.
- * @returns Say what comes back.
- * @throws If the function throws, say when. Delete this line if it does not.
+ * @param input - The string to check.
+ * @returns An object indicating whether the string is valid JSON and the parsed data or error. Via the structure of IsJsonParseResult, if valid is true, data will contain the parsed JSON. If valid is false, error will contain the parsing error. This function does not throw an error for invalid JSON; instead, it returns an object with valid set to false and the error information.
  *
  * @example
  * ```ts
- * isJson() // result
+ * isJson('{"name": "John"}') // { valid: true, data: { name: "John" } }
+ * isJson('not json') // { valid: false, error: SyntaxError }
  * ```
  *
  * @category string
