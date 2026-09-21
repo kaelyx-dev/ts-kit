@@ -1,5 +1,5 @@
 export type * from './is-json.types'
-import type { JsonParseResult } from './is-json.types'
+import type { IsJsonParseResult } from './is-json.types'
 
 /**
  * One sentence that says what the function does.
@@ -15,7 +15,7 @@ import type { JsonParseResult } from './is-json.types'
  *
  * @category string
  */
-export function isJson<T = unknown>(input: string): JsonParseResult<T> {
+export function isJson<T = unknown>(input: string): IsJsonParseResult<T> {
   try {
     const data = JSON.parse(input) as T
     return { valid: true, data }
