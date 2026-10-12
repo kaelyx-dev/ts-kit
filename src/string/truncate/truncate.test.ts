@@ -227,4 +227,13 @@ describe('truncate', () => {
     expect(truncate('hello world', 0)).toBe('')
     expect(() => truncate('hello world', Number.NaN)).toThrow(RangeError)
   })
+
+  it('matches each unit example in the TSDoc', () => {
+    expect(truncate('😀😀😀😀', 2)).toBe('😀😀')
+    expect(truncate('😀😀😀😀', 2)).toHaveLength(4)
+    expect(truncate('😀😀😀😀', 2, { unit: 'grapheme' })).toBe('😀😀')
+    expect(truncate('😀😀😀😀', 2, { unit: 'codeUnit' })).toBe('😀')
+    expect(truncate('café', 4, { unit: 'byte' })).toBe('caf')
+    expect(truncate('👨‍👩‍👧', 2, { unit: 'codeUnit' })).toBe('')
+  })
 })

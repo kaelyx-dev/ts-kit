@@ -84,6 +84,14 @@ function cutGraphemes(graphemes: readonly string[], cut: number): string {
  * graphemes, so it never splits an emoji or separates an accent from its letter. Trailing
  * whitespace is removed from the cut text.
  *
+ * With the default unit, the result can have a `.length` that is more than `length`, because
+ * `.length` counts UTF-16 code units, not graphemes. For example, `truncate('😀😀😀😀', 2)` returns
+ * `'😀😀'`, and its `.length` is 4. Choose the unit for the limit that you must fit:
+ *
+ * - `'grapheme'` for text that people read, for example a label or a preview.
+ * - `'codeUnit'` for a limit on `.length`.
+ * - `'byte'` for a limit in bytes, for example a database index or an HTTP header.
+ *
  * @param input - The string to truncate. If the input already fits, the function returns it unchanged.
  * @param length - The maximum length of the result. If `length` is not an integer, the function rounds it down. If `length` is 0 or less, the function returns an empty string. If `length` is `Infinity`, the function returns the input.
  * @param options - The suffix to add, whether the suffix counts towards `length`, whether to cut at a word boundary, and the unit that lengths count in. See {@link TruncateOptions}.
@@ -105,6 +113,13 @@ function cutGraphemes(graphemes: readonly string[], cut: number): string {
  * truncate('hello world', Infinity) // 'hello world'
  * truncate('hello world', 0) // ''
  * truncate('hello world', NaN) // throws RangeError
+ *
+ * // Units. The cut is always between graphemes, so the result can be shorter than length.
+ * truncate('😀😀😀😀', 2) // '😀😀', and its .length is 4
+ * truncate('😀😀😀😀', 2, { unit: 'grapheme' }) // '😀😀'
+ * truncate('😀😀😀😀', 2, { unit: 'codeUnit' }) // '😀'
+ * truncate('café', 4, { unit: 'byte' }) // 'caf', because 'é' is 2 bytes
+ * truncate('👨‍👩‍👧', 2, { unit: 'codeUnit' }) // '', because the first grapheme is 8 code units
  * ```
  * @category string
  */
