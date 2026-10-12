@@ -4,13 +4,11 @@ import {
   resolveQueryStringOptions,
   splitKey,
 } from '../../_internal/object/query-string/query-string'
+import type { QueryStringResolvedOptions } from '../../_internal/object/query-string/query-string.types'
 import { parseJson } from '../../string/parse-json/parse-json'
-import type {
-  FromQueryStringOptions,
-  FromQueryStringResolvedOptions,
-} from './from-query-string.types'
+import type { FromQueryStringOptions } from './from-query-string.types'
 
-function decodeValue(key: string, raw: string, options: FromQueryStringResolvedOptions): unknown {
+function decodeValue(key: string, raw: string, options: QueryStringResolvedOptions): unknown {
   if (options.mode === 'string') return raw
 
   const parsed = parseJson(raw)
@@ -24,11 +22,7 @@ function decodeValue(key: string, raw: string, options: FromQueryStringResolvedO
  * Decode every value that the query string has for `key`. With `arrayFormat: 'repeat'`, two or
  * more values make an array. Otherwise the last value wins.
  */
-function decodeValues(
-  key: string,
-  raws: string[],
-  options: FromQueryStringResolvedOptions,
-): unknown {
+function decodeValues(key: string, raws: string[], options: QueryStringResolvedOptions): unknown {
   if (options.arrayFormat === 'repeat' && raws.length > 1) {
     return raws.map((raw) => decodeValue(key, raw, options))
   }

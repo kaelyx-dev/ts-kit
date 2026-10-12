@@ -6,7 +6,8 @@ import {
   joinKey,
   resolveQueryStringOptions,
 } from '../../_internal/object/query-string/query-string'
-import type { ToQueryStringOptions, ToQueryStringResolvedOptions } from './to-query-string.types'
+import type { ToQueryStringResolvedOptions } from '../../_internal/object/query-string/query-string.types'
+import type { ToQueryStringOptions } from './to-query-string.types'
 
 /** Object keys, or array indexes inside a value that is written as JSON. */
 type Path = readonly (string | number)[]
