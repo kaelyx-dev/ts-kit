@@ -1,0 +1,5 @@
+/* Long type and function names have no spaces to break at, so let them wrap anywhere instead
+   of spilling out of the sidebar. */
+.VPSidebarItem .text {
+  overflow-wrap: anywhere;
+}
