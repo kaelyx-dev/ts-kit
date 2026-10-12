@@ -1,57 +1,38 @@
 export type * from './from-query-string.types'
+import {
+  UNSAFE_KEYS,
+  resolveQueryStringOptions,
+  splitKey,
+} from '../../_internal/object/query-string/query-string'
 import { parseJson } from '../../string/parse-json/parse-json'
 import type {
   FromQueryStringOptions,
   FromQueryStringResolvedOptions,
 } from './from-query-string.types'
 
-function resolveFromQueryStringOptions(
-  options?: FromQueryStringOptions,
-): FromQueryStringResolvedOptions {
-  if (options?.deep === false) {
-    return {
-      deep: false,
-      deepSeparator: '.',
-      deepLimit: Number.POSITIVE_INFINITY,
-      parseJson: options.parseJson ?? true,
-      parsePrimitives: options.parsePrimitives ?? false,
-    }
-  }
+function decodeValue(key: string, raw: string, options: FromQueryStringResolvedOptions): unknown {
+  if (options.mode === 'string') return raw
 
-  return {
-    deep: true,
-    deepSeparator: options?.deepSeparator ?? '.',
-    deepLimit: options?.deepLimit ?? Number.POSITIVE_INFINITY,
-    parseJson: options?.parseJson ?? true,
-    parsePrimitives: options?.parsePrimitives ?? false,
-  }
+  const parsed = parseJson(raw)
+  if (parsed.ok) return parsed.value
+  throw new SyntaxError(`fromQueryString: the value of "${key}" is not valid JSON.`, {
+    cause: parsed.error,
+  })
 }
 
 /**
- * Keys that would let an attacker reach into (or pollute) an object's
- * prototype via `input[key]` assignment during unflattening. Skipped
- * outright rather than assigned.
+ * Decode every value that the query string has for `key`. With `arrayFormat: 'repeat'`, two or
+ * more values make an array. Otherwise the last value wins.
  */
-const UNSAFE_KEYS = new Set(['__proto__', 'prototype', 'constructor'])
-
-function parsePrimitiveString(value: string): unknown {
-  if (value === 'true') return true
-  if (value === 'false') return false
-  if (value.trim() !== '' && !Number.isNaN(Number(value))) return Number(value)
-  return value
-}
-
-function parseValue(raw: string, options: FromQueryStringResolvedOptions): unknown {
-  if (options.parseJson) {
-    const parsed = parseJson(raw)
-    if (parsed.ok) return parsed.value
+function decodeValues(
+  key: string,
+  raws: string[],
+  options: FromQueryStringResolvedOptions,
+): unknown {
+  if (options.arrayFormat === 'repeat' && raws.length > 1) {
+    return raws.map((raw) => decodeValue(key, raw, options))
   }
-
-  if (options.parsePrimitives) {
-    return parsePrimitiveString(raw)
-  }
-
-  return raw
+  return decodeValue(key, raws[raws.length - 1] as string, options)
 }
 
 /**
@@ -80,54 +61,42 @@ function setAtPath(target: Record<string, unknown>, segments: string[], value: u
 }
 
 /**
- * Split a flattened key like `a.b.c` into `['a', 'b', 'c']`, honouring
- * `deepSeparator` and `deepLimit`. Once `deepLimit` splits have been made,
- * the remainder of the key (including any further separators) is kept as
- * a single trailing segment — mirroring `toQueryString`'s `deepLimit`
- * behaviour, where nesting stops but the leftover value is preserved whole.
- */
-function splitKey(key: string, options: FromQueryStringResolvedOptions): string[] {
-  if (!options.deep || !Number.isFinite(options.deepLimit)) {
-    return key.split(options.deepSeparator)
-  }
-
-  const segments = key.split(options.deepSeparator)
-  if (segments.length <= options.deepLimit + 1) return segments
-
-  const head = segments.slice(0, options.deepLimit)
-  const tail = segments.slice(options.deepLimit).join(options.deepSeparator)
-  return [...head, tail]
-}
-
-/**
- * fromQueryString, converts a query string back into an object. The inverse
- * of `toQueryString` — use matching `deep`/`deepSeparator` options to
- * round-trip correctly.
+ * fromQueryString, converts a query string back into an object. The inverse of
+ * `toQueryString`: with the same options, `fromQueryString(toQueryString(value, options), options)`
+ * gives the value back, within the limits that the
+ * {@link https://kaelyx.dev/ts-kit/guide/query-strings | query string contract} states.
  *
- * If deep is true (default), keys containing `deepSeparator` are split and
- * rebuilt into nested objects. For example, `"a.b=1"` becomes `{ a: { b: 1 } }`.
+ * In strings-only mode (the default), each value is returned as a string. The function does not
+ * guess a type, so `"count=42"` gives `{ count: '42' }`. In JSON mode (`mode: 'json'`), each
+ * value is parsed as JSON.
  *
- * If deep is false, each param becomes a single top-level key with no
- * splitting. For example, `"a=%7B%22b%22%3A1%7D"` becomes `{ a: '{"b":1}' }`
- * unless `parseJson` decodes it further (see below).
+ * With `arrayFormat: 'repeat'` (the default in strings-only mode), two or more equal keys give
+ * an array, and one key gives one value. With `arrayFormat: 'json'`, the last value of a key wins.
  *
- * Regardless of `deep`, if `parseJson` is true (default) any value that looks
- * like JSON is parsed into its real form — so a value serialised with
- * `toQueryString({ deep: false })` round-trips back into a nested object.
+ * If deep is true (default), keys containing `deepSeparator` are split and rebuilt into nested
+ * objects. For example, `"a.b=1"` becomes `{ a: { b: '1' } }`. If deep is false, each param
+ * becomes a single top-level key with no splitting.
+ *
+ * The keys `__proto__`, `prototype` and `constructor` are dropped.
  *
  * @param input - The query string to parse. A leading `?` is stripped if present.
  *   An empty string returns `{}`.
- * @param options - Controls unflattening and value coercion. See {@link FromQueryStringOptions}.
+ * @param options - Controls the mode, the array format and unflattening. See {@link FromQueryStringOptions}.
  * @returns A plain object rebuilt from the query string.
+ * @throws {SyntaxError} In JSON mode, if a value is not valid JSON. The message contains the key, and `cause` is the error from `JSON.parse`.
  *
  * @example
  * ```ts
+ * // Strings-only mode, the default. Repeated keys are arrays.
  * fromQueryString('a=1&b=two') // { a: '1', b: 'two' }
- * fromQueryString('a=1&b=two', { parsePrimitives: true }) // { a: 1, b: 'two' }
- * fromQueryString('a.b=1') // { a: { b: 1 } } -- parsePrimitives here only affects
- * //   values, not detecting numeric strings unless enabled; '1' stays '1' unless parsePrimitives is true
- * fromQueryString('a=%7B%22b%22%3A1%7D') // { a: { b: 1 } } via parseJson
- * fromQueryString('a=%7B%22b%22%3A1%7D', { parseJson: false }) // { a: '{"b":1}' }
+ * fromQueryString('a.b=1') // { a: { b: '1' } }
+ * fromQueryString('tags=x&tags=y') // { tags: ['x', 'y'] }
+ * fromQueryString('tags=%5B%22x%22%5D', { arrayFormat: 'json' }) // { tags: '["x"]' }
+ *
+ * // JSON mode. Each value is parsed as JSON.
+ * fromQueryString('name=%22Ada%22&age=3', { mode: 'json' }) // { name: 'Ada', age: 3 }
+ * fromQueryString('tags=%5B%22x%22%5D', { mode: 'json' }) // { tags: ['x'] }
+ * fromQueryString('tags=%22x%22&tags=%22y%22', { mode: 'json', arrayFormat: 'repeat' }) // { tags: ['x', 'y'] }
  * ```
  *
  * @category object
@@ -136,22 +105,15 @@ export function fromQueryString(
   input: string,
   options?: FromQueryStringOptions,
 ): Record<string, unknown> {
-  const resolvedOptions = resolveFromQueryStringOptions(options)
+  const resolvedOptions = resolveQueryStringOptions(options)
   const query = input.startsWith('?') ? input.slice(1) : input
 
   const result: Record<string, unknown> = {}
   const params = new URLSearchParams(query)
 
-  for (const [key, raw] of params) {
-    const value = parseValue(raw, resolvedOptions)
-
-    if (!resolvedOptions.deep) {
-      if (!UNSAFE_KEYS.has(key)) result[key] = value
-      continue
-    }
-
-    const segments = splitKey(key, resolvedOptions)
-    setAtPath(result, segments, value)
+  for (const key of new Set(params.keys())) {
+    const value = decodeValues(key, params.getAll(key), resolvedOptions)
+    setAtPath(result, splitKey(key, resolvedOptions), value)
   }
 
   return result

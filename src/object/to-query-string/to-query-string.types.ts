@@ -1,8 +1,13 @@
+import type {
+  QueryStringDeepOptions,
+  QueryStringShallowOptions,
+} from '../../_internal/object/query-string/query-string.types'
+
 interface ToQueryStringOptionsBase {
   /**
-   * Caps how many levels deep JSON.stringify will go when a value is
-   * serialised, truncating further nesting with a placeholder.
-   * @default 2
+   * The number of nesting levels that a value written as JSON can have. If the value goes
+   * deeper, `toQueryString` throws a `TypeError`. It never truncates the data.
+   * @default Infinity
    */
   serialiseLimit?: number
 }
@@ -12,7 +17,9 @@ interface ToQueryStringOptionsBase {
  *
  * @category object
  */
-export interface ToQueryStringOptionsShallow extends ToQueryStringOptionsBase {
+export interface ToQueryStringOptionsShallow
+  extends ToQueryStringOptionsBase,
+    QueryStringShallowOptions {
   /** Nested objects are serialised as a single JSON-string param instead of flattened. */
   deep: false
   /**
@@ -28,13 +35,7 @@ export interface ToQueryStringOptionsShallow extends ToQueryStringOptionsBase {
  *
  * @category object
  */
-export interface ToQueryStringOptionsDeep extends ToQueryStringOptionsBase {
-  /** Nested objects are flattened into `parent.child=value` keys. @default true */
-  deep?: true
-  /** @default '.' */
-  deepSeparator?: string
-  /** @default Infinity */
-  deepLimit?: number
+export interface ToQueryStringOptionsDeep extends ToQueryStringOptionsBase, QueryStringDeepOptions {
   /**
    * What happens to a nested object once `deepLimit` is reached.
    * @default true

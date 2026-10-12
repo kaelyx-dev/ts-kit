@@ -21,12 +21,12 @@ describe('fromQueryString', () => {
     })
   })
 
-  it('parses JSON values by default', () => {
+  it('returns every value as a string by default, and does not guess a type', () => {
     expect(fromQueryString('count=42&enabled=true&empty=null&items=%5B1%2C2%5D')).toEqual({
-      count: 42,
-      enabled: true,
-      empty: null,
-      items: [1, 2],
+      count: '42',
+      enabled: 'true',
+      empty: 'null',
+      items: '[1,2]',
     })
   })
 
@@ -38,63 +38,6 @@ describe('fromQueryString', () => {
     })
   })
 
-  it('round-trips JSON serialized as a query value', () => {
-    expect(fromQueryString('filters=%7B%22status%22%3A%22open%22%2C%22page%22%3A2%7D')).toEqual({
-      filters: { status: 'open', page: 2 },
-    })
-  })
-
-  it('can disable JSON parsing while retaining raw values', () => {
-    expect(
-      fromQueryString('count=42&enabled=true&filters=%7B%22open%22%3Atrue%7D', {
-        parseJson: false,
-      }),
-    ).toEqual({
-      count: '42',
-      enabled: 'true',
-      filters: '{"open":true}',
-    })
-  })
-
-  it('coerces primitive strings only when requested', () => {
-    expect(fromQueryString('count=42&enabled=true&name=Ada', { parseJson: false })).toEqual({
-      count: '42',
-      enabled: 'true',
-      name: 'Ada',
-    })
-
-    expect(
-      fromQueryString('count=42&enabled=true&name=Ada', {
-        parseJson: false,
-        parsePrimitives: true,
-      }),
-    ).toEqual({
-      count: 42,
-      enabled: true,
-      name: 'Ada',
-    })
-  })
-
-  it('coerces "false" to a boolean when primitive parsing is enabled', () => {
-    expect(fromQueryString('enabled=false', { parseJson: false, parsePrimitives: true })).toEqual({
-      enabled: false,
-    })
-  })
-
-  it('coerces numeric boundary and whitespace values when primitive parsing is enabled', () => {
-    expect(
-      fromQueryString('zero=0&negative=-3.5&exponent=1e3&spaced=%2012%20', {
-        parseJson: false,
-        parsePrimitives: true,
-      }),
-    ).toEqual({
-      zero: 0,
-      negative: -3.5,
-      exponent: 1000,
-      spaced: 12,
-    })
-  })
-
   it('preserves empty values as empty strings', () => {
     expect(fromQueryString('empty=&also-empty')).toEqual({
       empty: '',
@@ -102,26 +45,52 @@ describe('fromQueryString', () => {
     })
   })
 
-  it('uses the last value for repeated keys', () => {
-    expect(fromQueryString('tag=first&tag=second&tag=third')).toEqual({ tag: 'third' })
+  it('collects repeated keys into an array by default', () => {
+    expect(fromQueryString('tag=first&tag=second&tag=third')).toEqual({
+      tag: ['first', 'second', 'third'],
+    })
+  })
+
+  it('collects repeated deep keys into a nested array', () => {
+    expect(fromQueryString('a.b=1&a.b=2')).toEqual({ a: { b: ['1', '2'] } })
+  })
+
+  it('gives one string for one key', () => {
+    expect(fromQueryString('tag=only')).toEqual({ tag: 'only' })
+  })
+
+  it('uses the last value for repeated keys with arrayFormat json', () => {
+    expect(fromQueryString('tag=first&tag=second', { arrayFormat: 'json' })).toEqual({
+      tag: 'second',
+    })
+  })
+
+  it('returns a JSON array as a string in strings-only mode with arrayFormat json', () => {
+    expect(fromQueryString('tags=%5B%22a%22%5D', { arrayFormat: 'json' })).toEqual({
+      tags: '["a"]',
+    })
   })
 
   it('rebuilds nested objects from dotted keys by default', () => {
     expect(fromQueryString('user.name=Ada&user.active=true')).toEqual({
-      user: { name: 'Ada', active: true },
+      user: { name: 'Ada', active: 'true' },
     })
   })
 
   it('supports a custom deep separator', () => {
     expect(fromQueryString('user/name=Ada&user/age=37', { deepSeparator: '/' })).toEqual({
-      user: { name: 'Ada', age: 37 },
+      user: { name: 'Ada', age: '37' },
     })
+  })
+
+  it('throws a TypeError for an empty deepSeparator', () => {
+    expect(() => fromQueryString('a=1', { deepSeparator: '' })).toThrow(TypeError)
   })
 
   it('keeps separators in keys when deep parsing is disabled', () => {
     expect(fromQueryString('user.name=Ada&user.age=37', { deep: false })).toEqual({
       'user.name': 'Ada',
-      'user.age': 37,
+      'user.age': '37',
     })
   })
 
@@ -167,6 +136,69 @@ describe('fromQueryString', () => {
   it('ignores unsafe keys in shallow mode too', () => {
     expect(fromQueryString('__proto__=bad&constructor=bad&safe=ok', { deep: false })).toEqual({
       safe: 'ok',
+    })
+  })
+
+  describe('in JSON mode', () => {
+    it('parses each value as JSON', () => {
+      expect(
+        fromQueryString('name=%22Ada%22&count=42&ok=true&none=null&items=%5B1%2C2%5D', {
+          mode: 'json',
+        }),
+      ).toEqual({ name: 'Ada', count: 42, ok: true, none: null, items: [1, 2] })
+    })
+
+    it('rebuilds nested objects and parses their leaf values', () => {
+      expect(fromQueryString('u.name=%22Ada%22&u.age=3', { mode: 'json' })).toEqual({
+        u: { name: 'Ada', age: 3 },
+      })
+    })
+
+    it('throws a SyntaxError that names the key and keeps the cause', () => {
+      const parse = () => fromQueryString('ok=1&u.name=Ada', { mode: 'json' })
+      expect(parse).toThrow(SyntaxError)
+      expect(parse).toThrow('fromQueryString: the value of "u.name" is not valid JSON.')
+      try {
+        parse()
+      } catch (error) {
+        expect((error as Error).cause).toBeInstanceOf(SyntaxError)
+      }
+    })
+
+    it('throws a SyntaxError for an empty value', () => {
+      expect(() => fromQueryString('a=', { mode: 'json' })).toThrow(SyntaxError)
+    })
+
+    it('uses the last value for repeated keys by default', () => {
+      expect(fromQueryString('v=1&v=2', { mode: 'json' })).toEqual({ v: 2 })
+    })
+
+    it('parses each repeated value with arrayFormat repeat', () => {
+      expect(
+        fromQueryString('v=%22a%22&v=%7B%22b%22%3A1%7D', { mode: 'json', arrayFormat: 'repeat' }),
+      ).toEqual({ v: ['a', { b: 1 }] })
+    })
+  })
+
+  describe('documented examples', () => {
+    it('strings-only mode', () => {
+      expect(fromQueryString('a=1&b=two')).toEqual({ a: '1', b: 'two' })
+      expect(fromQueryString('a.b=1')).toEqual({ a: { b: '1' } })
+      expect(fromQueryString('tags=x&tags=y')).toEqual({ tags: ['x', 'y'] })
+      expect(fromQueryString('tags=%5B%22x%22%5D', { arrayFormat: 'json' })).toEqual({
+        tags: '["x"]',
+      })
+    })
+
+    it('JSON mode', () => {
+      expect(fromQueryString('name=%22Ada%22&age=3', { mode: 'json' })).toEqual({
+        name: 'Ada',
+        age: 3,
+      })
+      expect(fromQueryString('tags=%5B%22x%22%5D', { mode: 'json' })).toEqual({ tags: ['x'] })
+      expect(
+        fromQueryString('tags=%22x%22&tags=%22y%22', { mode: 'json', arrayFormat: 'repeat' }),
+      ).toEqual({ tags: ['x', 'y'] })
     })
   })
 })

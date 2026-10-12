@@ -72,6 +72,7 @@ export default defineConfig({
           items: [
             { text: 'Getting started', link: '/guide/getting-started' },
             { text: 'Scripts', link: '/guide/scripts' },
+            { text: 'Query string contract', link: '/guide/query-strings' },
             { text: 'Adding a function', link: '/guide/adding-a-function' },
             { text: 'Adding a type', link: '/guide/adding-a-type' },
             { text: 'Changesets and releases', link: '/guide/changesets-and-releases' },
