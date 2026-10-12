@@ -1,5 +1,6 @@
 export type * from './parse-json.types'
 
+import { ok, err } from '../../result'
 import type { Result } from '../../types/result/result.types'
 
 /**
@@ -19,10 +20,10 @@ import type { Result } from '../../types/result/result.types'
  */
 export function parseJson<T = unknown>(input: string): Result<T, SyntaxError> {
   try {
-    return { ok: true, value: JSON.parse(input) }
+    return ok(JSON.parse(input))
   } catch (error) {
     if (error instanceof SyntaxError) {
-      return { ok: false, error: error as SyntaxError }
+      return err(error as SyntaxError)
     }
     throw error
   }

@@ -45,6 +45,26 @@
       "types": "./dist/object/to-query-string.d.ts",
       "default": "./dist/object/to-query-string.js"
     },
+    "./result": {
+      "types": "./dist/result.d.ts",
+      "default": "./dist/result.js"
+    },
+    "./result/err": {
+      "types": "./dist/result/err.d.ts",
+      "default": "./dist/result/err.js"
+    },
+    "./result/ok": {
+      "types": "./dist/result/ok.d.ts",
+      "default": "./dist/result/ok.js"
+    },
+    "./result/unwrap": {
+      "types": "./dist/result/unwrap.d.ts",
+      "default": "./dist/result/unwrap.js"
+    },
+    "./result/unwrap-or": {
+      "types": "./dist/result/unwrap-or.d.ts",
+      "default": "./dist/result/unwrap-or.js"
+    },
     "./string": {
       "types": "./dist/string.d.ts",
       "default": "./dist/string.js"
