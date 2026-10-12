@@ -1,5 +1,11 @@
 # @kaelyx/ts-kit
 
+## 0.4.1
+
+### Patch Changes
+
+- a88174b: Updated readme and documentation on querystring conversions
+
 ## 0.4.0
 
 ### Minor Changes
