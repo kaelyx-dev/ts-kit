@@ -60,19 +60,24 @@ export default defineConfig({
   base: '/ts-kit/', // served from https://kaelyx.dev/ts-kit/, not the domain root
   themeConfig: {
     nav: [
-      { text: 'Guide', link: '/guide/getting-started' },
+      { text: 'Guides', link: '/usage/query-strings' },
+      { text: 'Development', link: '/guide/getting-started' },
       { text: 'API', link: '/api/' },
     ],
     sidebar: {
       '/api/': apiSidebar,
       '/': [
         {
-          text: 'Guide',
+          text: 'Guides',
+          collapsed: false,
+          items: [{ text: 'Query string contract', link: '/usage/query-strings' }],
+        },
+        {
+          text: 'Development',
           collapsed: false,
           items: [
             { text: 'Getting started', link: '/guide/getting-started' },
             { text: 'Scripts', link: '/guide/scripts' },
-            { text: 'Query string contract', link: '/guide/query-strings' },
             { text: 'Adding a function', link: '/guide/adding-a-function' },
             { text: 'Adding a type', link: '/guide/adding-a-type' },
             { text: 'Changesets and releases', link: '/guide/changesets-and-releases' },
