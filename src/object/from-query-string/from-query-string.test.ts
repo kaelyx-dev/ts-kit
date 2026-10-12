@@ -87,6 +87,28 @@ describe('fromQueryString', () => {
     expect(() => fromQueryString('a=1', { deepSeparator: '' })).toThrow(TypeError)
   })
 
+  it('throws a RangeError for a deepLimit that is not an integer', () => {
+    // toQueryString writes { a: { b: { c: 1 } } } with deepLimit 1.5 as a.b.c=1. A split at
+    // 1.5 levels would give { a: { 'b.c': '1' } }, so the value must not decode.
+    expect(() => fromQueryString('a.b.c=1', { deepLimit: 1.5 })).toThrow(
+      new RangeError(
+        'fromQueryString: deepLimit must be an integer of 0 or more, or Infinity. Received 1.5.',
+      ),
+    )
+  })
+
+  it.each([1.5, -1, Number.NaN, Number.NEGATIVE_INFINITY])(
+    'throws a RangeError for deepLimit %s',
+    (deepLimit) => {
+      expect(() => fromQueryString('a=1', { deepLimit })).toThrow(RangeError)
+      expect(() => fromQueryString('a=1', { deepLimit })).toThrow(`Received ${deepLimit}.`)
+    },
+  )
+
+  it.each([0, 2, Number.POSITIVE_INFINITY])('accepts deepLimit %s', (deepLimit) => {
+    expect(fromQueryString('a=1', { deepLimit })).toEqual({ a: '1' })
+  })
+
   it('keeps separators in keys when deep parsing is disabled', () => {
     expect(fromQueryString('user.name=Ada&user.age=37', { deep: false })).toEqual({
       'user.name': 'Ada',

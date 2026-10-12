@@ -4,13 +4,11 @@ import {
   resolveQueryStringOptions,
   splitKey,
 } from '../../_internal/object/query-string/query-string'
+import type { QueryStringResolvedOptions } from '../../_internal/object/query-string/query-string.types'
 import { parseJson } from '../../string/parse-json/parse-json'
-import type {
-  FromQueryStringOptions,
-  FromQueryStringResolvedOptions,
-} from './from-query-string.types'
+import type { FromQueryStringOptions } from './from-query-string.types'
 
-function decodeValue(key: string, raw: string, options: FromQueryStringResolvedOptions): unknown {
+function decodeValue(key: string, raw: string, options: QueryStringResolvedOptions): unknown {
   if (options.mode === 'string') return raw
 
   const parsed = parseJson(raw)
@@ -24,11 +22,7 @@ function decodeValue(key: string, raw: string, options: FromQueryStringResolvedO
  * Decode every value that the query string has for `key`. With `arrayFormat: 'repeat'`, two or
  * more values make an array. Otherwise the last value wins.
  */
-function decodeValues(
-  key: string,
-  raws: string[],
-  options: FromQueryStringResolvedOptions,
-): unknown {
+function decodeValues(key: string, raws: string[], options: QueryStringResolvedOptions): unknown {
   if (options.arrayFormat === 'repeat' && raws.length > 1) {
     return raws.map((raw) => decodeValue(key, raw, options))
   }
@@ -84,6 +78,7 @@ function setAtPath(target: Record<string, unknown>, segments: string[], value: u
  * @param options - Controls the mode, the array format and unflattening. See {@link FromQueryStringOptions}.
  * @returns A plain object rebuilt from the query string.
  * @throws {SyntaxError} In JSON mode, if a value is not valid JSON. The message contains the key, and `cause` is the error from `JSON.parse`.
+ * @throws {RangeError} If `deepLimit` is not an integer of 0 or more, or `Infinity`. The message contains the option name and the value.
  *
  * @example
  * ```ts
@@ -105,7 +100,7 @@ export function fromQueryString(
   input: string,
   options?: FromQueryStringOptions,
 ): Record<string, unknown> {
-  const resolvedOptions = resolveQueryStringOptions(options)
+  const resolvedOptions = resolveQueryStringOptions('fromQueryString', options)
   const query = input.startsWith('?') ? input.slice(1) : input
 
   const result: Record<string, unknown> = {}

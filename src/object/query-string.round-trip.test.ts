@@ -36,6 +36,13 @@ const circular = (): Record<string, unknown> => {
   return node
 }
 
+/** A copy of `properties` with a symbol key that is not enumerable. */
+const withHiddenSymbol = (properties: Record<string, unknown>): Record<string, unknown> => {
+  const object = { ...properties }
+  Object.defineProperty(object, Symbol('s'), { value: 1, enumerable: false })
+  return object
+}
+
 const unsupported: [string, () => unknown][] = [
   ['NaN', () => Number.NaN],
   ['Infinity', () => Number.POSITIVE_INFINITY],
@@ -65,6 +72,36 @@ describe.each([
 
   it.each(['__proto__', 'prototype', 'constructor'])('the key %s', (key) => {
     expectTypeError({ filters: { [key]: 1 } }, options, `filters.${key}`)
+  })
+
+  it('a symbol key, which Object.entries would skip', () => {
+    expectTypeError({ [Symbol('s')]: 1, a: 1 }, options, 'Symbol(s)')
+  })
+
+  it('a symbol key in a nested object, with a TypeError that names the key path', () => {
+    expectTypeError({ filters: { [Symbol('s')]: 1 } }, options, 'filters.Symbol(s)')
+  })
+
+  it('a symbol key in a nested object that is written as JSON', () => {
+    const shallow: Options = { ...options, deep: false }
+    expectTypeError({ filters: { [Symbol('s')]: 1 } }, shallow, 'filters.Symbol(s)')
+  })
+})
+
+describe.each([
+  ['strings-only mode', STRING],
+  ['JSON mode', JSON_MODE],
+])('in %s, toQueryString ignores', (_mode, options) => {
+  it('a symbol key that is not enumerable', () => {
+    const input = withHiddenSymbol({ a: 1, filters: withHiddenSymbol({ a: 1 }) })
+    expect(toQueryString(input, options)).toBe(toQueryString({ a: 1, filters: { a: 1 } }, options))
+  })
+
+  it('a symbol key that is not enumerable, in a nested object that is written as JSON', () => {
+    const shallow: Options = { ...options, deep: false }
+    expect(toQueryString({ filters: withHiddenSymbol({ a: 1 }) }, shallow)).toBe(
+      toQueryString({ filters: { a: 1 } }, shallow),
+    )
   })
 })
 
@@ -199,5 +236,110 @@ describe('in JSON mode, a round trip', () => {
 
   it('turns a date into an ISO string', () => {
     expect(roundTripValue(new Date(0), JSON_MODE)).toEqual({ v: '1970-01-01T00:00:00.000Z' })
+  })
+})
+
+// A fault that occurs only with some nesting options is not found by the rows above, which use
+// the default options. These rows repeat a round trip for each combination of deep, deepSeparator
+// and deepLimit.
+
+const JSON_FIXTURE = {
+  name: 'Ada',
+  age: 36,
+  active: true,
+  manager: null,
+  settings: {},
+  tags: [],
+  teams: [{ id: 1 }, { id: 2, lead: 'Bob' }],
+  profile: {
+    city: 'London',
+    score: 1.5,
+    address: {
+      verified: false,
+      note: null,
+      extra: {},
+      codes: [],
+      geo: { lat: 51.5, label: 'home', pins: [{ x: 1 }] },
+    },
+  },
+}
+
+const STRINGS_FIXTURE = {
+  name: 'Ada',
+  tags: ['x', 'y'],
+  profile: {
+    city: 'London',
+    aliases: ['A', 'B'],
+    address: {
+      street: 'Main',
+      geo: { lat: '51.5', pins: ['p', 'q'] },
+    },
+  },
+}
+
+/**
+ * The result of a strings-only round trip of STRINGS_FIXTURE, by the number of levels of nested
+ * objects that become keys. A nested object below those levels comes back as its JSON text.
+ */
+const STRINGS_EXPECTED = new Map<number, Record<string, unknown>>([
+  [
+    0,
+    {
+      name: 'Ada',
+      tags: ['x', 'y'],
+      profile:
+        '{"city":"London","aliases":["A","B"],"address":{"street":"Main","geo":{"lat":"51.5","pins":["p","q"]}}}',
+    },
+  ],
+  [
+    1,
+    {
+      name: 'Ada',
+      tags: ['x', 'y'],
+      profile: {
+        city: 'London',
+        aliases: ['A', 'B'],
+        address: '{"street":"Main","geo":{"lat":"51.5","pins":["p","q"]}}',
+      },
+    },
+  ],
+  [
+    2,
+    {
+      name: 'Ada',
+      tags: ['x', 'y'],
+      profile: {
+        city: 'London',
+        aliases: ['A', 'B'],
+        address: { street: 'Main', geo: '{"lat":"51.5","pins":["p","q"]}' },
+      },
+    },
+  ],
+  [Number.POSITIVE_INFINITY, STRINGS_FIXTURE],
+])
+
+const DEEP_SEPARATORS = ['.', '/', '__']
+const DEEP_LIMITS = [0, 1, 2, Number.POSITIVE_INFINITY]
+
+const NESTING_COMBINATIONS: [label: string, options: Options, flattenedLevels: number][] = [
+  ['deep: false', { deep: false }, 0],
+  ...DEEP_SEPARATORS.flatMap((deepSeparator) =>
+    DEEP_LIMITS.map((deepLimit): [string, Options, number] => [
+      `deep: true, deepSeparator: '${deepSeparator}', deepLimit: ${deepLimit}`,
+      { deep: true, deepSeparator, deepLimit },
+      deepLimit,
+    ]),
+  ),
+]
+
+describe.each(NESTING_COMBINATIONS)('with %s, a round trip', (_label, nesting, flattenedLevels) => {
+  it("in JSON mode with arrayFormat: 'json' gives the input back", () => {
+    const options: Options = { ...nesting, mode: 'json', arrayFormat: 'json' }
+    expect(roundTrip(JSON_FIXTURE, options)).toEqual(JSON_FIXTURE)
+  })
+
+  it("in strings-only mode with arrayFormat: 'repeat' turns objects below deepLimit into JSON text", () => {
+    const options: Options = { ...nesting, mode: 'string', arrayFormat: 'repeat' }
+    expect(roundTrip(STRINGS_FIXTURE, options)).toEqual(STRINGS_EXPECTED.get(flattenedLevels))
   })
 })

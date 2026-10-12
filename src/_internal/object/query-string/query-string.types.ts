@@ -61,3 +61,10 @@ export interface QueryStringResolvedOptions {
   deepSeparator: string
   deepLimit: number
 }
+
+/** The options that `toQueryString` resolves: the shared options and the `serialise*` options. */
+export interface ToQueryStringResolvedOptions extends QueryStringResolvedOptions {
+  serialiseOnDeepLimitExceeded: boolean
+  serialiseOnShallow: boolean
+  serialiseLimit: number
+}

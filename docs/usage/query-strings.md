@@ -53,6 +53,7 @@ The input is the value of one key. "Key omitted" means that the key is not in th
 | A circular reference | `TypeError` | `TypeError` |
 | A key that contains `deepSeparator`, with `deep: true` | `TypeError` | `TypeError` |
 | A key `__proto__`, `prototype` or `constructor` | `TypeError` | `TypeError` |
+| A symbol key | `TypeError` | `TypeError` |
 
 Notes:
 
@@ -75,6 +76,11 @@ in these conditions:
 - In strings-only mode with `arrayFormat: 'repeat'`, an array holds an object or an array. Use
   JSON mode for these arrays.
 - `deepSeparator` is an empty string. The decoder also throws for this condition.
+
+The two functions throw a `RangeError` if `deepLimit` is not an integer of 0 or more, or
+`Infinity`. The encoder also throws a `RangeError` for the same condition in `serialiseLimit`.
+The message contains the option name and the value, for example
+`toQueryString: deepLimit must be an integer of 0 or more, or Infinity. Received 1.5.`
 
 In JSON mode, if a value is not valid JSON, the decoder throws a `SyntaxError`. The message
 contains the key. The `cause` property holds the original error.

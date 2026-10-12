@@ -32,17 +32,3 @@ export interface FromQueryStringOptionsDeep extends QueryStringDeepOptions {
  * @category object
  */
 export type FromQueryStringOptions = FromQueryStringOptionsShallow | FromQueryStringOptionsDeep
-
-/**
- * Internal, fully-resolved form of {@link FromQueryStringOptions}. Not part
- * of the public API — built once by `resolveQueryStringOptions` and
- * passed through the parsing helpers. Derived from both branches (minus
- * `deep`, which differs in type between them) so it can't drift if a branch
- * gains a new option.
- *
- * @internal
- */
-export type FromQueryStringResolvedOptions = { deep: boolean } & Required<
-  Omit<FromQueryStringOptionsShallow, 'deep'>
-> &
-  Required<Omit<FromQueryStringOptionsDeep, 'deep'>>

@@ -3,7 +3,8 @@
 /**
  * Options for `truncate`.
  *
- * All lengths are counted in grapheme clusters (user-visible characters), not UTF-16 code units.
+ * All lengths are counted in `unit`. The default unit is grapheme clusters (user-visible
+ * characters), not UTF-16 code units.
  *
  * @category string
  */
@@ -28,4 +29,19 @@ export interface TruncateOptions {
    * @default false
    */
   readonly truncateAtWordBoundary?: boolean
+
+  /**
+   * The unit that `length` and the length of `append` count in.
+   *
+   * - `'grapheme'`: grapheme clusters (user-visible characters).
+   * - `'codeUnit'`: UTF-16 code units, the unit of `.length`.
+   * - `'byte'`: bytes when the text is encoded as UTF-8.
+   *
+   * The cut is always between graphemes, and the function never cuts a grapheme. Thus the
+   * result can be shorter than `length`, and the result can be empty. For example, with
+   * `unit: 'codeUnit'` and a `length` of 2, `'👨‍👩‍👧'` gives `''`, because the grapheme has 8
+   * code units.
+   * @default 'grapheme'
+   */
+  readonly unit?: 'grapheme' | 'codeUnit' | 'byte'
 }
