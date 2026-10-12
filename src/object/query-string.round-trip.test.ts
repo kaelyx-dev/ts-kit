@@ -36,6 +36,13 @@ const circular = (): Record<string, unknown> => {
   return node
 }
 
+/** A copy of `properties` with a symbol key that is not enumerable. */
+const withHiddenSymbol = (properties: Record<string, unknown>): Record<string, unknown> => {
+  const object = { ...properties }
+  Object.defineProperty(object, Symbol('s'), { value: 1, enumerable: false })
+  return object
+}
+
 const unsupported: [string, () => unknown][] = [
   ['NaN', () => Number.NaN],
   ['Infinity', () => Number.POSITIVE_INFINITY],
@@ -65,6 +72,36 @@ describe.each([
 
   it.each(['__proto__', 'prototype', 'constructor'])('the key %s', (key) => {
     expectTypeError({ filters: { [key]: 1 } }, options, `filters.${key}`)
+  })
+
+  it('a symbol key, which Object.entries would skip', () => {
+    expectTypeError({ [Symbol('s')]: 1, a: 1 }, options, 'Symbol(s)')
+  })
+
+  it('a symbol key in a nested object, with a TypeError that names the key path', () => {
+    expectTypeError({ filters: { [Symbol('s')]: 1 } }, options, 'filters.Symbol(s)')
+  })
+
+  it('a symbol key in a nested object that is written as JSON', () => {
+    const shallow: Options = { ...options, deep: false }
+    expectTypeError({ filters: { [Symbol('s')]: 1 } }, shallow, 'filters.Symbol(s)')
+  })
+})
+
+describe.each([
+  ['strings-only mode', STRING],
+  ['JSON mode', JSON_MODE],
+])('in %s, toQueryString ignores', (_mode, options) => {
+  it('a symbol key that is not enumerable', () => {
+    const input = withHiddenSymbol({ a: 1, filters: withHiddenSymbol({ a: 1 }) })
+    expect(toQueryString(input, options)).toBe(toQueryString({ a: 1, filters: { a: 1 } }, options))
+  })
+
+  it('a symbol key that is not enumerable, in a nested object that is written as JSON', () => {
+    const shallow: Options = { ...options, deep: false }
+    expect(toQueryString({ filters: withHiddenSymbol({ a: 1 }) }, shallow)).toBe(
+      toQueryString({ filters: { a: 1 } }, shallow),
+    )
   })
 })
 

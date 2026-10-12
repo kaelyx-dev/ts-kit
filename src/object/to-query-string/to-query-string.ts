@@ -91,6 +91,15 @@ function checkKey(key: string, path: Path, context: Context): void {
   if (UNSAFE_KEYS.has(key)) fail(path, context, `the key "${key}" is not allowed`)
 }
 
+/** `Object.entries` skips symbol keys, so throw for each one that holds data. */
+function checkSymbolKeys(object: object, path: Path, context: Context): void {
+  for (const symbol of Object.getOwnPropertySymbols(object)) {
+    if (Object.prototype.propertyIsEnumerable.call(object, symbol)) {
+      fail([...path, String(symbol)], context, 'a symbol key is not supported')
+    }
+  }
+}
+
 /** Run `visit` with `value` on the current path. Throws if `value` is already on it. */
 function withAncestor<T>(value: object, path: Path, context: Context, visit: () => T): T {
   if (context.ancestors.has(value)) fail(path, context, 'the value has a circular reference')
@@ -137,6 +146,7 @@ function objectToJson(
   context: Context,
   depth: number,
 ): Record<string, unknown> {
+  checkSymbolKeys(object, path, context)
   const result: Record<string, unknown> = {}
   for (const [key, value] of Object.entries(object)) {
     checkKey(key, [...path, key], context)
@@ -225,6 +235,7 @@ function encodeEntries(
 ): Entry[] {
   const { deep, deepSeparator } = context.options
 
+  checkSymbolKeys(object, path, context)
   return withAncestor(object, path, context, () =>
     Object.entries(object).flatMap(([key, value]) => {
       const childPath = [...path, key]
@@ -254,7 +265,7 @@ function encodeEntries(
  * @param input - The plain object to convert. An empty object (`{}`) returns an empty string. `undefined` values are omitted. In strings-only mode, `null` values are written as an empty string, and dates as ISO strings.
  * @param options - Controls the mode, the array format, flattening depth and how (or whether) nested objects beyond that depth are JSON-serialised. See {@link ToQueryStringOptions}.
  * @returns A URL-encoded query string (without a leading `?`).
- * @throws {TypeError} If a value cannot round-trip: `NaN`, `Infinity`, a `BigInt`, a `Map`, a `Set`, a class instance, a function, a symbol, an invalid date, an `undefined` array item, or a circular reference. Also if a key is `__proto__`, `prototype` or `constructor`, if a key contains `deepSeparator` while `deep` is true, if a value written as JSON is deeper than `serialiseLimit`, or if an array holds an object or an array with `arrayFormat: 'repeat'` in strings-only mode. The message contains the key path.
+ * @throws {TypeError} If a value cannot round-trip: `NaN`, `Infinity`, a `BigInt`, a `Map`, a `Set`, a class instance, a function, a symbol, an invalid date, an `undefined` array item, or a circular reference. Also if a key is `__proto__`, `prototype` or `constructor`, if an enumerable key is a symbol, if a key contains `deepSeparator` while `deep` is true, if a value written as JSON is deeper than `serialiseLimit`, or if an array holds an object or an array with `arrayFormat: 'repeat'` in strings-only mode. The message contains the key path.
  * @throws {RangeError} If `deepLimit` or `serialiseLimit` is not an integer of 0 or more, or `Infinity`. The message contains the option name and the value.
  *
  * @example

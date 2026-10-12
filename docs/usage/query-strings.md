@@ -53,6 +53,7 @@ The input is the value of one key. "Key omitted" means that the key is not in th
 | A circular reference | `TypeError` | `TypeError` |
 | A key that contains `deepSeparator`, with `deep: true` | `TypeError` | `TypeError` |
 | A key `__proto__`, `prototype` or `constructor` | `TypeError` | `TypeError` |
+| A symbol key | `TypeError` | `TypeError` |
 
 Notes:
 
