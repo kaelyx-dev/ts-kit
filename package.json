@@ -61,6 +61,10 @@
       "types": "./dist/string/is-json.d.ts",
       "default": "./dist/string/is-json.js"
     },
+    "./string/parse-json": {
+      "types": "./dist/string/parse-json.d.ts",
+      "default": "./dist/string/parse-json.js"
+    },
     "./string/questionmark": {
       "types": "./dist/string/questionmark.d.ts",
       "default": "./dist/string/questionmark.js"
@@ -87,7 +91,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
-    "docs": "tsx scripts/copy-docs.ts && typedoc",
+    "docs": "tsx scripts/copy-docs.ts && typedoc && tsx scripts/inline-types.ts",
     "docs:check": "typedoc --emit none --validation.notDocumented --treatWarningsAsErrors",
     "docs:dev": "npm run docs && vitepress dev docs",
     "docs:build": "npm run docs && vitepress build docs",

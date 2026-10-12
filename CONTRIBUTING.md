@@ -30,7 +30,8 @@ Node.js 22 or later is required.
 
 1. Create a branch.
 2. If you are adding a function, run `npm run new -- <category> <name>` and follow
-   [Adding a function](./docs/guide/adding-a-function.md).
+   [Adding a function](./docs/guide/adding-a-function.md). If you are adding a standalone type,
+   run `npm run new -- type <name>` and follow [Adding a type](./docs/guide/adding-a-type.md).
 3. Write the code, the tests, and the TSDoc block together. A test that always passes has no
    value. See Rule 3 of [AI-POLICY.md](./AI-POLICY.md).
 4. Run `npm run test:watch` while you work.
