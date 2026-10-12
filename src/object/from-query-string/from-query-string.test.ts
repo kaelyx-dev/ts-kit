@@ -75,6 +75,12 @@ describe('fromQueryString', () => {
     })
   })
 
+  it('coerces "false" to a boolean when primitive parsing is enabled', () => {
+    expect(fromQueryString('enabled=false', { parseJson: false, parsePrimitives: true })).toEqual({
+      enabled: false,
+    })
+  })
+
   it('coerces numeric boundary and whitespace values when primitive parsing is enabled', () => {
     expect(
       fromQueryString('zero=0&negative=-3.5&exponent=1e3&spaced=%2012%20', {
@@ -126,6 +132,10 @@ describe('fromQueryString', () => {
     expect(fromQueryString('a.b.c.d=value', { deepLimit: 2 })).toEqual({
       a: { b: { 'c.d': 'value' } },
     })
+  })
+
+  it('splits keys normally when they are within the deep limit', () => {
+    expect(fromQueryString('a.b=value', { deepLimit: 5 })).toEqual({ a: { b: 'value' } })
   })
 
   it('keeps the full key literal when the deep limit is zero', () => {

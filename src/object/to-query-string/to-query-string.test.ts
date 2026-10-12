@@ -70,4 +70,31 @@ describe('toQueryString', () => {
       ),
     ).toBe('filters=%7B%22user%22%3A%7B%22preferences%22%3A%22%5BObject%5D%22%7D%7D')
   })
+
+  it('serialises nested JSON in full when the serialisation limit is infinite', () => {
+    const filters = { user: { preferences: { theme: 'dark' } } }
+    expect(
+      toQueryString({ filters }, { deep: false, serialiseLimit: Number.POSITIVE_INFINITY }),
+    ).toBe(new URLSearchParams({ filters: JSON.stringify(filters) }).toString())
+  })
+
+  it('replaces circular references when serialising nested JSON', () => {
+    const node: Record<string, unknown> = { id: 1 }
+    node.self = node
+    expect(toQueryString({ node }, { deep: false })).toBe(
+      new URLSearchParams({ node: '{"id":1,"self":"[Circular]"}' }).toString(),
+    )
+  })
+
+  it('truncates nested arrays according to the serialisation limit', () => {
+    expect(toQueryString({ filters: { tags: ['a', ['b', ['c']]] } }, { deep: false })).toBe(
+      new URLSearchParams({ filters: '{"tags":["a","[Array]"]}' }).toString(),
+    )
+  })
+
+  it('serialises top-level array values as JSON', () => {
+    expect(toQueryString({ tags: ['a', 'b'] })).toBe(
+      new URLSearchParams({ tags: '["a","b"]' }).toString(),
+    )
+  })
 })

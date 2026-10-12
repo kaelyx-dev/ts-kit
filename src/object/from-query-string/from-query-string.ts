@@ -62,23 +62,20 @@ function parseValue(raw: string, options: FromQueryStringResolvedOptions): unkno
 function setAtPath(target: Record<string, unknown>, segments: string[], value: unknown): void {
   let cursor = target
 
-  for (let i = 0; i < segments.length; i++) {
-    const segment = segments[i]
-    if (segment === undefined) return
+  const lastIndex = segments.length - 1
+
+  for (const [i, segment] of segments.entries()) {
     if (UNSAFE_KEYS.has(segment)) return
 
-    const isLast = i === segments.length - 1
-
-    if (isLast) {
+    if (i === lastIndex) {
       cursor[segment] = value
-      return
+    } else {
+      const existing = cursor[segment]
+      if (typeof existing !== 'object' || existing === null || Array.isArray(existing)) {
+        cursor[segment] = {}
+      }
+      cursor = cursor[segment] as Record<string, unknown>
     }
-
-    const existing = cursor[segment]
-    if (typeof existing !== 'object' || existing === null || Array.isArray(existing)) {
-      cursor[segment] = {}
-    }
-    cursor = cursor[segment] as Record<string, unknown>
   }
 }
 

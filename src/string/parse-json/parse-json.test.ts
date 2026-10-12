@@ -80,4 +80,9 @@ describe('parseJson', () => {
       expect(result.error).toBeInstanceOf(SyntaxError)
     }
   })
+
+  it('should rethrow errors that are not a SyntaxError', () => {
+    // @ts-expect-error testing non-string input that cannot be coerced to a string
+    expect(() => parseJson(Symbol('not json'))).toThrow(TypeError)
+  })
 })
