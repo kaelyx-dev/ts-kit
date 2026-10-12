@@ -1,5 +1,10 @@
 // Public types for truncate.
 // Every exported name must start with "Truncate".
+/**
+ * Options for `truncate`.
+ *
+ * @category string
+ */
 export interface TruncateOptions {
   /**
    * The string to append to the end of the truncated string.

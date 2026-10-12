@@ -7,6 +7,11 @@ interface ToQueryStringOptionsBase {
   serialiseLimit?: number
 }
 
+/**
+ * Options for `toQueryString` when nested objects are not flattened.
+ *
+ * @category object
+ */
 export interface ToQueryStringOptionsShallow extends ToQueryStringOptionsBase {
   /** Nested objects are serialised as a single JSON-string param instead of flattened. */
   deep: false
@@ -18,6 +23,11 @@ export interface ToQueryStringOptionsShallow extends ToQueryStringOptionsBase {
   serialiseOnShallow?: boolean
 }
 
+/**
+ * Options for `toQueryString` when nested objects are flattened into separate keys. This is the default.
+ *
+ * @category object
+ */
 export interface ToQueryStringOptionsDeep extends ToQueryStringOptionsBase {
   /** Nested objects are flattened into `parent.child=value` keys. @default true */
   deep?: true
@@ -32,6 +42,11 @@ export interface ToQueryStringOptionsDeep extends ToQueryStringOptionsBase {
   serialiseOnDeepLimitExceeded?: boolean
 }
 
+/**
+ * Options for `toQueryString`. Set `deep: false` to keep nested objects as JSON strings.
+ *
+ * @category object
+ */
 export type ToQueryStringOptions = ToQueryStringOptionsShallow | ToQueryStringOptionsDeep
 
 /**

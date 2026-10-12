@@ -1,20 +1,21 @@
 export type * from './err.types'
-import type { Result } from '../..';
+
+import type { Result } from '../../types/result/result.types'
 
 /**
- * One sentence that says what the function does.
+ * Creates a failed `Result` that holds the given error.
  *
- * @param input - The data. Say what an empty value does.
- * @returns Say what comes back.
- * @throws If the function throws, say when. Delete this line if it does not.
+ * @param error - The error to hold. Falsy values such as `undefined`, `''` or `0` are kept as they are.
+ * @returns A `Result` with `ok: false` and the error in the `error` property.
  *
  * @example
  * ```ts
- * err() // result
+ * err('Something went wrong') // { ok: false, error: 'Something went wrong' }
+ * err(new Error('Boom')) // { ok: false, error: Error('Boom') }
  * ```
  *
  * @category result
  */
-export function err<E>(input: E): Result<never, E> {
-  return { ok: false, error: input }
+export function err<E>(error: E): Result<never, E> {
+  return { ok: false, error }
 }

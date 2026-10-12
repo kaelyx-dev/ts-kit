@@ -1,25 +1,25 @@
 export type * from './unwrap-or.types'
 
+import type { Result } from '../../types/result/result.types'
+
 /**
- * One sentence that says what the function does.
+ * Returns the value of a successful `Result`, or the default value if the `Result` failed.
  *
- * @param input - The data. Say what an empty value does.
- * @returns Say what comes back.
- * @throws If the function throws, say when. Delete this line if it does not.
+ * @param result - The `Result` to unwrap.
+ * @param defaultValue - The value to return when `ok` is `false`.
+ * @returns The value of the `Result` when `ok` is `true`. Otherwise, `defaultValue`.
  *
  * @example
  * ```ts
- * unwrapOr() // result
+ * unwrapOr(ok(42), 0) // 42
+ * unwrapOr(err('Something went wrong'), 0) // 0
  * ```
  *
  * @category result
  */
-import type { Result } from '../..'
-
 export function unwrapOr<T, E>(result: Result<T, E>, defaultValue: T): T {
   if (result.ok) {
     return result.value
-  } else {
-    return defaultValue
   }
+  return defaultValue
 }

@@ -15,4 +15,16 @@
  *
  * @category types
  */
-export type Result<T, E = Error> = { ok: true; value: T } | { ok: false; error: E }
+export type Result<T, E = Error> =
+  | {
+      /** `true` when the operation succeeded. */
+      ok: true
+      /** The value the operation produced. */
+      value: T
+    }
+  | {
+      /** `false` when the operation failed. */
+      ok: false
+      /** The error that describes why the operation failed. */
+      error: E
+    }

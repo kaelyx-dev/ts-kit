@@ -1,21 +1,21 @@
-import type { Result } from '../..';
-
 export type * from './ok.types'
 
+import type { Result } from '../../types/result/result.types'
+
 /**
- * One sentence that says what the function does.
+ * Creates a successful `Result` that holds the given value.
  *
- * @param input - The data. Say what an empty value does.
- * @returns Say what comes back.
- * @throws If the function throws, say when. Delete this line if it does not.
+ * @param value - The value to hold. Falsy values such as `undefined`, `''` or `0` are kept as they are.
+ * @returns A `Result` with `ok: true` and the value in the `value` property.
  *
  * @example
  * ```ts
- * ok() // result
+ * ok(42) // { ok: true, value: 42 }
+ * ok({ name: 'John' }) // { ok: true, value: { name: 'John' } }
  * ```
  *
  * @category result
  */
-export function ok<T>(input: T): Result<T, never> {
-  return { ok: true, value: input }
+export function ok<T>(value: T): Result<T, never> {
+  return { ok: true, value }
 }
