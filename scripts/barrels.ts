@@ -2,6 +2,8 @@ import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'n
 import { dirname, join } from 'node:path'
 
 // Writes (or checks) src/index.ts, src/<category>/index.ts and src/types/index.ts.
+// src/types/index.ts collects every function's <fn>.types.ts, then every standalone type in
+// src/types/<name>/<name>.types.ts.
 // Run with --check to verify the files on disk match what this script would write.
 
 const root = join(import.meta.dirname, '..')
@@ -34,6 +36,11 @@ const listFunctions = (category: string): string[] =>
     .filter((name) => isDirectory(join(srcDir, category, name)))
     .sort()
 
+const listStandaloneTypes = (): string[] =>
+  readdirSync(join(srcDir, 'types'))
+    .filter((name) => isDirectory(join(srcDir, 'types', name)))
+    .sort()
+
 const categoryBarrel = (category: string): string => {
   const lines = listFunctions(category).map((fn) => `export * from './${fn}/${fn}'`)
   return `${GENERATED_HEADER}${lines.join('\n')}${lines.length > 0 ? '\n' : ''}`
@@ -41,10 +48,41 @@ const categoryBarrel = (category: string): string => {
 
 const rootBarrel = (): string => {
   const lines = listCategories().map((category) => `export * from './${category}'`)
+  // Function types already reach the root through their functions; this adds standalone types.
+  lines.push(`export type * from './types'`)
   return `${GENERATED_HEADER}${lines.join('\n')}${lines.length > 0 ? '\n' : ''}`
 }
 
 const exportNamePattern = /export\s+(?:type|interface)\s+([A-Za-z0-9_]+)/g
+
+// Every exported type name must start with the PascalCase form of its folder name, and no name
+// may be exported twice, so the types barrel can never have a collision.
+const checkTypeNames = (typesPath: string, folderName: string, seen: Map<string, string>): void => {
+  let content: string
+  try {
+    content = readFileSync(typesPath, 'utf8')
+  } catch {
+    throw new Error(`Missing types file: ${typesPath}`)
+  }
+
+  const expectedPrefix = kebabToPascal(folderName)
+  for (const match of content.matchAll(exportNamePattern)) {
+    const typeName = match[1]
+    if (typeName === undefined) {
+      continue
+    }
+    if (!typeName.startsWith(expectedPrefix)) {
+      throw new Error(`Type "${typeName}" in ${typesPath} must start with "${expectedPrefix}".`)
+    }
+    const existing = seen.get(typeName)
+    if (existing !== undefined) {
+      throw new Error(
+        `Type name collision: "${typeName}" is exported from both ${existing} and ${typesPath}.`,
+      )
+    }
+    seen.set(typeName, typesPath)
+  }
+}
 
 const typesBarrel = (): string => {
   const seen = new Map<string, string>()
@@ -52,34 +90,14 @@ const typesBarrel = (): string => {
 
   for (const category of listCategories()) {
     for (const fn of listFunctions(category)) {
-      const typesPath = join(srcDir, category, fn, `${fn}.types.ts`)
-      let content: string
-      try {
-        content = readFileSync(typesPath, 'utf8')
-      } catch {
-        throw new Error(`Missing types file: ${typesPath}`)
-      }
-
-      const expectedPrefix = kebabToPascal(fn)
-      for (const match of content.matchAll(exportNamePattern)) {
-        const typeName = match[1]
-        if (typeName === undefined) {
-          continue
-        }
-        if (!typeName.startsWith(expectedPrefix)) {
-          throw new Error(`Type "${typeName}" in ${typesPath} must start with "${expectedPrefix}".`)
-        }
-        const existing = seen.get(typeName)
-        if (existing !== undefined) {
-          throw new Error(
-            `Type name collision: "${typeName}" is exported from both ${existing} and ${typesPath}.`,
-          )
-        }
-        seen.set(typeName, typesPath)
-      }
-
+      checkTypeNames(join(srcDir, category, fn, `${fn}.types.ts`), fn, seen)
       lines.push(`export * from '../${category}/${fn}/${fn}.types'`)
     }
+  }
+
+  for (const name of listStandaloneTypes()) {
+    checkTypeNames(join(srcDir, 'types', name, `${name}.types.ts`), name, seen)
+    lines.push(`export * from './${name}/${name}.types'`)
   }
 
   return `${GENERATED_HEADER}${lines.join('\n')}${lines.length > 0 ? '\n' : ''}`

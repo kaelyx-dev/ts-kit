@@ -1,0 +1,2 @@
+# Check out text files with LF on every platform, to match Biome and the repository.
+* text=auto eol=lf

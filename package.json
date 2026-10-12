@@ -33,6 +33,38 @@
       "types": "./dist/array/concatenate.d.ts",
       "default": "./dist/array/concatenate.js"
     },
+    "./object": {
+      "types": "./dist/object.d.ts",
+      "default": "./dist/object.js"
+    },
+    "./object/from-query-string": {
+      "types": "./dist/object/from-query-string.d.ts",
+      "default": "./dist/object/from-query-string.js"
+    },
+    "./object/to-query-string": {
+      "types": "./dist/object/to-query-string.d.ts",
+      "default": "./dist/object/to-query-string.js"
+    },
+    "./result": {
+      "types": "./dist/result.d.ts",
+      "default": "./dist/result.js"
+    },
+    "./result/err": {
+      "types": "./dist/result/err.d.ts",
+      "default": "./dist/result/err.js"
+    },
+    "./result/ok": {
+      "types": "./dist/result/ok.d.ts",
+      "default": "./dist/result/ok.js"
+    },
+    "./result/unwrap": {
+      "types": "./dist/result/unwrap.d.ts",
+      "default": "./dist/result/unwrap.js"
+    },
+    "./result/unwrap-or": {
+      "types": "./dist/result/unwrap-or.d.ts",
+      "default": "./dist/result/unwrap-or.js"
+    },
     "./string": {
       "types": "./dist/string.d.ts",
       "default": "./dist/string.js"
@@ -45,9 +77,21 @@
       "types": "./dist/string/fullstop.d.ts",
       "default": "./dist/string/fullstop.js"
     },
+    "./string/is-json": {
+      "types": "./dist/string/is-json.d.ts",
+      "default": "./dist/string/is-json.js"
+    },
+    "./string/parse-json": {
+      "types": "./dist/string/parse-json.d.ts",
+      "default": "./dist/string/parse-json.js"
+    },
     "./string/questionmark": {
       "types": "./dist/string/questionmark.d.ts",
       "default": "./dist/string/questionmark.js"
+    },
+    "./string/truncate": {
+      "types": "./dist/string/truncate.d.ts",
+      "default": "./dist/string/truncate.js"
     },
     "./types": {
       "types": "./dist/types.d.ts",
@@ -67,7 +111,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
-    "docs": "tsx scripts/copy-docs.ts && typedoc",
+    "docs": "tsx scripts/copy-docs.ts && typedoc && tsx scripts/inline-types.ts",
     "docs:check": "typedoc --emit none --validation.notDocumented --treatWarningsAsErrors",
     "docs:dev": "npm run docs && vitepress dev docs",
     "docs:build": "npm run docs && vitepress build docs",

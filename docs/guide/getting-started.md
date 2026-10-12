@@ -37,9 +37,13 @@ src/
 │  │  └─ concatenate.types.ts  # its public types, written by hand
 │  └─ index.ts           # a barrel, written by scripts/barrels.ts
 ├─ types/
+│  ├─ json-value/        # one directory per standalone type
+│  │  ├─ json-value.types.ts   # the type, written by hand
+│  │  └─ json-value.test.ts    # its type tests, written by hand
 │  └─ index.ts           # every public type, written by scripts/barrels.ts
 └─ index.ts              # the root barrel, written by scripts/barrels.ts
 ```
 
 See [Scripts](/guide/scripts) for what each npm script does, and
-[Adding a function](/guide/adding-a-function) for the steps to contribute a new function.
+[Adding a function](/guide/adding-a-function) and [Adding a type](/guide/adding-a-type) for the
+steps to contribute a new function or standalone type.

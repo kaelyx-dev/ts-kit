@@ -10,7 +10,8 @@ the function's **first parameter**, not its return type. See the category table 
 plan if you are unsure which one applies.
 
 Only add a new category when an existing one truly does not fit, and only add a ninth category
-when a function fits none of the eight above.
+when a function fits none of the eight above. The names `type` and `types` are reserved: `type`
+scaffolds a standalone type (see [Adding a type](/guide/adding-a-type)).
 
 ## 2. Run the scaffold command
 
@@ -50,6 +51,9 @@ Fill in `<name>.types.ts`. Every exported type name must start with the PascalCa
 function name (for example, `TruncateOptions` for `truncate`). This is required so the
 `@kaelyx/ts-kit/types` barrel has no name collisions: `scripts/barrels.ts` checks this and stops
 with an error if two functions export a type with the same name.
+
+If the type is useful on its own, or more than one function needs it, make it a standalone type
+instead. See [Adding a type](/guide/adding-a-type).
 
 ## 5. Write the tests
 

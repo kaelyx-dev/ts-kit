@@ -4,7 +4,7 @@ Every script lives in `package.json`. Run them with `npm run <script>`.
 
 | Script | What it does |
 | --- | --- |
-| `new` | Scaffolds a new function: `npm run new -- <category> <name>`. Writes the three files, then runs `barrels`. |
+| `new` | Scaffolds a new function: `npm run new -- <category> <name>`. Writes the three files, then runs `barrels`. With the category `type`, scaffolds a standalone type instead: `npm run new -- type <name>` writes two files in `src/types/<name>/`. |
 | `barrels` | Writes `src/index.ts`, every `src/<category>/index.ts`, and `src/types/index.ts`. Never edit these files by hand. |
 | `barrels:check` | Compares the barrels on disk against what `barrels` would write. Fails if they differ. This is what CI runs. |
 | `build` | Builds `dist/` with tsdown, from the glob of category and function files. |
@@ -13,7 +13,7 @@ Every script lives in `package.json`. Run them with `npm run <script>`.
 | `typecheck` | Runs `tsc --noEmit` over `src` and `scripts`. |
 | `lint` | Checks formatting and lint rules with Biome. |
 | `lint:fix` | Same as `lint`, but applies the safe fixes. |
-| `docs` | Runs TypeDoc and writes Markdown into `docs/api`, for the VitePress site. |
+| `docs` | Runs TypeDoc and writes Markdown into `docs/api`, for the VitePress site. Then `scripts/inline-types.ts` moves each type and interface onto the page of the function it belongs to. Standalone types from `src/types` keep their own pages. |
 | `docs:check` | Runs TypeDoc in validation mode only. Fails if an export has no TSDoc block or a doc link is broken. |
 | `docs:dev` | Generates the API docs, then starts the VitePress dev server for this site. |
 | `docs:build` | Generates the API docs, then builds the static site into `docs/.vitepress/dist`. |
@@ -24,8 +24,9 @@ Every script lives in `package.json`. Run them with `npm run <script>`.
 
 For everyday work:
 
-1. `npm run new -- <category> <name>` to scaffold a function.
-2. Write the function, its tests, and its types.
+1. `npm run new -- <category> <name>` to scaffold a function, or `npm run new -- type <name>` to
+   scaffold a standalone type.
+2. Write the function or type, its tests, and its types.
 3. `npm run test:watch` while you work.
 4. `npm run check` before you open a pull request.
 
