@@ -26,13 +26,21 @@ describe('truncate', () => {
   })
 
   it('counts the suffix length as part of the total when includeAppendInLength is enabled', () => {
-    expect(truncate('hello world', 8, { append: '...', includeAppendInLength: true })).toBe('hello...')
-    expect(truncate('hello world', 10, { append: '...', includeAppendInLength: true })).toBe('hello w...')
+    expect(truncate('hello world', 8, { append: '...', includeAppendInLength: true })).toBe(
+      'hello...',
+    )
+    expect(truncate('hello world', 10, { append: '...', includeAppendInLength: true })).toBe(
+      'hello w...',
+    )
   })
 
   it('truncates at the last word boundary when enabled', () => {
-    expect(truncate('hello world', 8, { append: '...', truncateAtWordBoundary: true })).toBe('hello...')
-    expect(truncate('helloworld', 5, { append: '...', truncateAtWordBoundary: true })).toBe('hello...')
+    expect(truncate('hello world', 8, { append: '...', truncateAtWordBoundary: true })).toBe(
+      'hello...',
+    )
+    expect(truncate('helloworld', 5, { append: '...', truncateAtWordBoundary: true })).toBe(
+      'hello...',
+    )
   })
 
   it('keeps the final value within the requested length even when the suffix is longer than the available space', () => {

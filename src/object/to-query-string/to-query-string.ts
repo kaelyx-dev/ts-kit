@@ -1,10 +1,7 @@
 export type * from './to-query-string.types'
-import type {
-  ToQueryStringOptions,
-  ToQueryStringOptionsResolvedOptions,
-} from './to-query-string.types'
+import type { ToQueryStringOptions, ToQueryStringResolvedOptions } from './to-query-string.types'
 
-function resolveOptions(options?: ToQueryStringOptions): ToQueryStringOptionsResolvedOptions {
+function resolveOptions(options?: ToQueryStringOptions): ToQueryStringResolvedOptions {
   if (options?.deep === false) {
     return {
       deep: false,
@@ -77,7 +74,7 @@ function getFullKey(prefix: string, key: string, separator: string): string {
 function flattenObjectEntry(
   key: string,
   value: Record<string, unknown>,
-  options: ToQueryStringOptionsResolvedOptions,
+  options: ToQueryStringResolvedOptions,
   depth: number,
 ): [string, string][] {
   if (!options.deep) {
@@ -98,7 +95,7 @@ function flattenObjectEntry(
 function flattenEntry(
   key: string,
   value: unknown,
-  options: ToQueryStringOptionsResolvedOptions,
+  options: ToQueryStringResolvedOptions,
   depth: number,
 ): [string, string][] {
   return isPlainObject(value)
@@ -108,7 +105,7 @@ function flattenEntry(
 
 function flattenEntries(
   input: Record<string, unknown>,
-  options: ToQueryStringOptionsResolvedOptions,
+  options: ToQueryStringResolvedOptions,
   prefix = '',
   depth = 0,
 ): [string, string][] {

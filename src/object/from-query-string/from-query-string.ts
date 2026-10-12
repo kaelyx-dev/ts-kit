@@ -1,5 +1,5 @@
 export type * from './from-query-string.types'
-import { isJson } from '../../string/is-json/is-json'
+import { parseJson } from '../../string/parse-json/parse-json'
 import type {
   FromQueryStringOptions,
   FromQueryStringResolvedOptions,
@@ -43,8 +43,8 @@ function parsePrimitiveString(value: string): unknown {
 
 function parseValue(raw: string, options: FromQueryStringResolvedOptions): unknown {
   if (options.parseJson) {
-    const parsed = isJson(raw)
-    if (parsed.valid) return parsed.data
+    const parsed = parseJson(raw)
+    if (parsed.ok) return parsed.value
   }
 
   if (options.parsePrimitives) {

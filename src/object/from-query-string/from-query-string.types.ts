@@ -51,6 +51,8 @@ export type FromQueryStringOptions = FromQueryStringOptionsShallow | FromQuerySt
  * passed through the parsing helpers. Derived from both branches (minus
  * `deep`, which differs in type between them) so it can't drift if a branch
  * gains a new option.
+ *
+ * @internal
  */
 export type FromQueryStringResolvedOptions = { deep: boolean } & Required<
   Omit<FromQueryStringOptionsShallow, 'deep'>

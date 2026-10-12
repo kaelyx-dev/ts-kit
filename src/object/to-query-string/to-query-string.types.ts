@@ -34,7 +34,16 @@ export interface ToQueryStringOptionsDeep extends ToQueryStringOptionsBase {
 
 export type ToQueryStringOptions = ToQueryStringOptionsShallow | ToQueryStringOptionsDeep
 
-export type ToQueryStringOptionsResolvedOptions = { deep: boolean } & Required<
+/**
+ * Internal, fully-resolved form of {@link ToQueryStringOptions}. Not part
+ * of the public API — built once by `resolveOptions` and passed through
+ * the serialising helpers. Derived from both branches (minus `deep`, which
+ * differs in type between them) so it can't drift if a branch gains a new
+ * option.
+ *
+ * @internal
+ */
+export type ToQueryStringResolvedOptions = { deep: boolean } & Required<
   Omit<ToQueryStringOptionsShallow, 'deep'>
 > &
   Required<Omit<ToQueryStringOptionsDeep, 'deep'>>

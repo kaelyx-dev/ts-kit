@@ -2,5 +2,6 @@
 export * from './exclamationmark/exclamationmark'
 export * from './fullstop/fullstop'
 export * from './is-json/is-json'
+export * from './parse-json/parse-json'
 export * from './questionmark/questionmark'
 export * from './truncate/truncate'
