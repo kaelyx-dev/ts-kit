@@ -156,6 +156,54 @@ describe('truncate', () => {
     })
   })
 
+  describe('units', () => {
+    it('counts in graphemes when unit is grapheme', () => {
+      expect(truncate('😀😀😀', 2, { unit: 'grapheme' })).toBe('😀😀')
+    })
+
+    it('counts in UTF-16 code units when unit is codeUnit', () => {
+      expect(truncate('😀😀😀', 2, { unit: 'codeUnit' })).toBe('😀')
+    })
+
+    it('counts in UTF-8 bytes when unit is byte', () => {
+      expect(truncate('café', 4, { unit: 'byte' })).toBe('caf')
+    })
+
+    it('never cuts a grapheme, so the result can be empty', () => {
+      expect(truncate('👨‍👩‍👧', 2, { unit: 'codeUnit' })).toBe('')
+      expect(truncate('😀', 3, { unit: 'byte' })).toBe('')
+    })
+
+    it('can return a result that is shorter than the length', () => {
+      expect(truncate('a😀b', 2, { unit: 'codeUnit' })).toBe('a')
+      expect(truncate('ab😀', 5, { unit: 'byte' })).toBe('ab')
+    })
+
+    it('returns the input when it fits exactly', () => {
+      expect(truncate('😀😀', 4, { unit: 'codeUnit' })).toBe('😀😀')
+      // 'abcd' is not short enough for the byte fast path, so this measures each grapheme.
+      expect(truncate('abcd', 4, { unit: 'byte' })).toBe('abcd')
+    })
+
+    it('measures the suffix in the unit', () => {
+      // '…' is 1 code unit and 3 bytes.
+      expect(truncate('hello world', 6, { append: '…', unit: 'codeUnit' })).toBe('hello…')
+      expect(truncate('hello world', 6, { append: '…', unit: 'byte' })).toBe('hel…')
+    })
+
+    it('returns the cut text without the suffix when the suffix is longer than the length', () => {
+      // '😀' is 1 grapheme but 2 code units. '…' is 1 grapheme but 3 bytes.
+      expect(truncate('hello world', 1, { append: '😀', unit: 'codeUnit' })).toBe('h')
+      expect(truncate('hello world', 2, { append: '…', unit: 'byte' })).toBe('he')
+    })
+
+    it('cuts at a word boundary within the limit in the unit', () => {
+      const wordBoundary = { truncateAtWordBoundary: true } as const
+      expect(truncate('😀😀 😀😀😀', 8, { ...wordBoundary, unit: 'codeUnit' })).toBe('😀😀')
+      expect(truncate('café au lait', 7, { ...wordBoundary, unit: 'byte' })).toBe('café')
+    })
+  })
+
   it('accepts a frozen options object', () => {
     const options = Object.freeze({ append: '...', truncateAtWordBoundary: true })
     expect(truncate('hello world', 8, options)).toBe('hello...')
