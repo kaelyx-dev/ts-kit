@@ -1,3 +1,4 @@
+import { takeGraphemes } from '../../_internal/string/graphemes/graphemes'
 import type { TruncateOptions } from './truncate.types'
 
 export type * from './truncate.types'
@@ -82,7 +83,8 @@ export function truncate(input: string, length: number, options?: TruncateOption
     return input
   }
 
-  const graphemes = splitGraphemes(input)
+  // findWordBoundary reads the grapheme at index `available`, which is never more than maxLength.
+  const graphemes = takeGraphemes(graphemeSegmenter.segment(input), maxLength + 1)
   if (graphemes.length <= maxLength) {
     return input
   }
