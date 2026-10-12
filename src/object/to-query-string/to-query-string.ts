@@ -238,7 +238,7 @@ function encodeEntries(
  * toQueryString, converts an object to a query string. The inverse of `fromQueryString`: with
  * the same options, `fromQueryString(toQueryString(value, options), options)` gives the value
  * back, within the limits that the
- * {@link https://kaelyx.dev/ts-kit/guide/query-strings | query string contract} states.
+ * {@link https://kaelyx.dev/ts-kit/usage/query-strings | query string contract} states.
  *
  * In strings-only mode (the default), each value is written as text and arrays are written as
  * repeated keys. In JSON mode (`mode: 'json'`), each value is written as JSON, so its type

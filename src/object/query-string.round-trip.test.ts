@@ -1,5 +1,5 @@
 // The round-trip contract between toQueryString and fromQueryString. Each test is one row of the
-// contract table in docs/guide/query-strings.md, in one mode. Change the table and these tests
+// contract table in docs/usage/query-strings.md, in one mode. Change the table and these tests
 // together.
 import { describe, expect, it } from 'vitest'
 import { fromQueryString } from './from-query-string/from-query-string'
