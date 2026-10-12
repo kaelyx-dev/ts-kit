@@ -56,6 +56,44 @@ describe('toQueryString', () => {
     expect(() => toQueryString({ a: 1 }, { deepSeparator: '' })).toThrow(TypeError)
   })
 
+  it('throws a RangeError for a deepLimit that is not an integer', () => {
+    // The decoder cannot split a key at 1.5 levels, so this value must not encode.
+    expect(() => toQueryString({ a: { b: { c: 1 } } }, { deepLimit: 1.5 })).toThrow(
+      new RangeError(
+        'toQueryString: deepLimit must be an integer of 0 or more, or Infinity. Received 1.5.',
+      ),
+    )
+  })
+
+  it.each([1.5, -1, Number.NaN, Number.NEGATIVE_INFINITY])(
+    'throws a RangeError for deepLimit %s',
+    (deepLimit) => {
+      expect(() => toQueryString({ a: 1 }, { deepLimit })).toThrow(RangeError)
+      expect(() => toQueryString({ a: 1 }, { deepLimit })).toThrow(`Received ${deepLimit}.`)
+    },
+  )
+
+  it.each([0, 2, Number.POSITIVE_INFINITY])('accepts deepLimit %s', (deepLimit) => {
+    expect(toQueryString({ a: 1 }, { deepLimit })).toBe('a=1')
+  })
+
+  it.each([1.5, -1, Number.NaN, Number.NEGATIVE_INFINITY])(
+    'throws a RangeError for serialiseLimit %s',
+    (serialiseLimit) => {
+      const message = `toQueryString: serialiseLimit must be an integer of 0 or more, or Infinity. Received ${serialiseLimit}.`
+      expect(() => toQueryString({ a: 1 }, { serialiseLimit })).toThrow(RangeError)
+      expect(() => toQueryString({ a: 1 }, { serialiseLimit })).toThrow(new RangeError(message))
+      expect(() => toQueryString({ a: 1 }, { deep: false, serialiseLimit })).toThrow(
+        new RangeError(message),
+      )
+    },
+  )
+
+  it.each([0, 2, Number.POSITIVE_INFINITY])('accepts serialiseLimit %s', (serialiseLimit) => {
+    expect(toQueryString({ a: 1 }, { serialiseLimit })).toBe('a=1')
+    expect(toQueryString({ a: 1 }, { deep: false, serialiseLimit })).toBe('a=1')
+  })
+
   it('keeps an empty top-level key as a key segment', () => {
     expect(toQueryString({ '': { a: '1' } })).toBe('.a=1')
   })

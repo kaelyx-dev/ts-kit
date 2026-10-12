@@ -84,6 +84,7 @@ function setAtPath(target: Record<string, unknown>, segments: string[], value: u
  * @param options - Controls the mode, the array format and unflattening. See {@link FromQueryStringOptions}.
  * @returns A plain object rebuilt from the query string.
  * @throws {SyntaxError} In JSON mode, if a value is not valid JSON. The message contains the key, and `cause` is the error from `JSON.parse`.
+ * @throws {RangeError} If `deepLimit` is not an integer of 0 or more, or `Infinity`. The message contains the option name and the value.
  *
  * @example
  * ```ts
@@ -105,7 +106,7 @@ export function fromQueryString(
   input: string,
   options?: FromQueryStringOptions,
 ): Record<string, unknown> {
-  const resolvedOptions = resolveQueryStringOptions(options)
+  const resolvedOptions = resolveQueryStringOptions('fromQueryString', options)
   const query = input.startsWith('?') ? input.slice(1) : input
 
   const result: Record<string, unknown> = {}

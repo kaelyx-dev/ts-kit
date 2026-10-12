@@ -18,8 +18,21 @@ export function isPlainObject(value: unknown): value is Record<string, unknown> 
   return prototype === Object.prototype || prototype === null
 }
 
+/**
+ * Throw a `RangeError` if `value` is not a valid limit: an integer of 0 or more, or `Infinity`.
+ * The decoder uses `deepLimit` as a slice index, so a fraction or a negative value makes it split
+ * keys at a different level from the encoder.
+ */
+export function checkLimit(caller: string, name: string, value: number): void {
+  if (value === Number.POSITIVE_INFINITY || (Number.isInteger(value) && value >= 0)) return
+  throw new RangeError(
+    `${caller}: ${name} must be an integer of 0 or more, or Infinity. Received ${value}.`,
+  )
+}
+
 /** Resolve the options that both functions share, with the defaults from the contract. */
 export function resolveQueryStringOptions(
+  caller: 'toQueryString' | 'fromQueryString',
   options?: QueryStringShallowOptions | QueryStringDeepOptions,
 ): QueryStringResolvedOptions {
   const mode = options?.mode ?? 'string'
@@ -40,12 +53,15 @@ export function resolveQueryStringOptions(
     throw new TypeError('The deepSeparator option must not be an empty string.')
   }
 
+  const deepLimit = options?.deepLimit ?? Number.POSITIVE_INFINITY
+  checkLimit(caller, 'deepLimit', deepLimit)
+
   return {
     mode,
     arrayFormat,
     deep: true,
     deepSeparator,
-    deepLimit: options?.deepLimit ?? Number.POSITIVE_INFINITY,
+    deepLimit,
   }
 }
 

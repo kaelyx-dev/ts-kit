@@ -76,6 +76,11 @@ in these conditions:
   JSON mode for these arrays.
 - `deepSeparator` is an empty string. The decoder also throws for this condition.
 
+The two functions throw a `RangeError` if `deepLimit` is not an integer of 0 or more, or
+`Infinity`. The encoder also throws a `RangeError` for the same condition in `serialiseLimit`.
+The message contains the option name and the value, for example
+`toQueryString: deepLimit must be an integer of 0 or more, or Infinity. Received 1.5.`
+
 In JSON mode, if a value is not valid JSON, the decoder throws a `SyntaxError`. The message
 contains the key. The `cause` property holds the original error.
 

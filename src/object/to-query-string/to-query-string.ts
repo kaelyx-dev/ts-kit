@@ -1,6 +1,7 @@
 export type * from './to-query-string.types'
 import {
   UNSAFE_KEYS,
+  checkLimit,
   isPlainObject,
   joinKey,
   resolveQueryStringOptions,
@@ -21,14 +22,16 @@ interface Context {
 }
 
 function resolveOptions(options?: ToQueryStringOptions): ToQueryStringResolvedOptions {
-  const shared = resolveQueryStringOptions(options)
+  const shared = resolveQueryStringOptions('toQueryString', options)
+  const serialiseLimit = options?.serialiseLimit ?? Number.POSITIVE_INFINITY
+  checkLimit('toQueryString', 'serialiseLimit', serialiseLimit)
 
   if (options?.deep === false) {
     return {
       ...shared,
       serialiseOnDeepLimitExceeded: true,
       serialiseOnShallow: options.serialiseOnShallow ?? true,
-      serialiseLimit: options.serialiseLimit ?? Number.POSITIVE_INFINITY,
+      serialiseLimit,
     }
   }
 
@@ -36,7 +39,7 @@ function resolveOptions(options?: ToQueryStringOptions): ToQueryStringResolvedOp
     ...shared,
     serialiseOnDeepLimitExceeded: options?.serialiseOnDeepLimitExceeded ?? true,
     serialiseOnShallow: true,
-    serialiseLimit: options?.serialiseLimit ?? Number.POSITIVE_INFINITY,
+    serialiseLimit,
   }
 }
 
@@ -252,6 +255,7 @@ function encodeEntries(
  * @param options - Controls the mode, the array format, flattening depth and how (or whether) nested objects beyond that depth are JSON-serialised. See {@link ToQueryStringOptions}.
  * @returns A URL-encoded query string (without a leading `?`).
  * @throws {TypeError} If a value cannot round-trip: `NaN`, `Infinity`, a `BigInt`, a `Map`, a `Set`, a class instance, a function, a symbol, an invalid date, an `undefined` array item, or a circular reference. Also if a key is `__proto__`, `prototype` or `constructor`, if a key contains `deepSeparator` while `deep` is true, if a value written as JSON is deeper than `serialiseLimit`, or if an array holds an object or an array with `arrayFormat: 'repeat'` in strings-only mode. The message contains the key path.
+ * @throws {RangeError} If `deepLimit` or `serialiseLimit` is not an integer of 0 or more, or `Infinity`. The message contains the option name and the value.
  *
  * @example
  * ```ts
