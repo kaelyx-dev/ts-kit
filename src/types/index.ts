@@ -2,6 +2,7 @@
 export * from '../array/concatenate/concatenate.types'
 export * from '../function/debounce/debounce.types'
 export * from '../function/debounce-with-abort/debounce-with-abort.types'
+export * from '../number/clamp/clamp.types'
 export * from '../object/from-query-string/from-query-string.types'
 export * from '../object/omit/omit.types'
 export * from '../object/pick/pick.types'

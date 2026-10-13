@@ -44,6 +44,13 @@
     "./function/debounce-with-abort": {
       "types": "./dist/function/debounce-with-abort.d.ts",
       "default": "./dist/function/debounce-with-abort.js"
+    "./number": {
+      "types": "./dist/number.d.ts",
+      "default": "./dist/number.js"
+    },
+    "./number/clamp": {
+      "types": "./dist/number/clamp.d.ts",
+      "default": "./dist/number/clamp.js"
     },
     "./object": {
       "types": "./dist/object.d.ts",
