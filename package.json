@@ -20,6 +20,92 @@
     "access": "public",
     "provenance": true
   },
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "array": [
+        "./dist/array.d.ts"
+      ],
+      "array/concatenate": [
+        "./dist/array/concatenate.d.ts"
+      ],
+      "function": [
+        "./dist/function.d.ts"
+      ],
+      "function/debounce": [
+        "./dist/function/debounce.d.ts"
+      ],
+      "function/debounce-with-abort": [
+        "./dist/function/debounce-with-abort.d.ts"
+      ],
+      "number": [
+        "./dist/number.d.ts"
+      ],
+      "number/clamp": [
+        "./dist/number/clamp.d.ts"
+      ],
+      "object": [
+        "./dist/object.d.ts"
+      ],
+      "object/from-query-string": [
+        "./dist/object/from-query-string.d.ts"
+      ],
+      "object/omit": [
+        "./dist/object/omit.d.ts"
+      ],
+      "object/pick": [
+        "./dist/object/pick.d.ts"
+      ],
+      "object/to-query-string": [
+        "./dist/object/to-query-string.d.ts"
+      ],
+      "object/with-defaults": [
+        "./dist/object/with-defaults.d.ts"
+      ],
+      "result": [
+        "./dist/result.d.ts"
+      ],
+      "result/err": [
+        "./dist/result/err.d.ts"
+      ],
+      "result/ok": [
+        "./dist/result/ok.d.ts"
+      ],
+      "result/unwrap": [
+        "./dist/result/unwrap.d.ts"
+      ],
+      "result/unwrap-or": [
+        "./dist/result/unwrap-or.d.ts"
+      ],
+      "string": [
+        "./dist/string.d.ts"
+      ],
+      "string/exclamationmark": [
+        "./dist/string/exclamationmark.d.ts"
+      ],
+      "string/fullstop": [
+        "./dist/string/fullstop.d.ts"
+      ],
+      "string/is-json": [
+        "./dist/string/is-json.d.ts"
+      ],
+      "string/parse-json": [
+        "./dist/string/parse-json.d.ts"
+      ],
+      "string/questionmark": [
+        "./dist/string/questionmark.d.ts"
+      ],
+      "string/template": [
+        "./dist/string/template.d.ts"
+      ],
+      "string/truncate": [
+        "./dist/string/truncate.d.ts"
+      ],
+      "types": [
+        "./dist/types.d.ts"
+      ]
+    }
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -152,7 +238,7 @@
     "docs:dev": "npm run docs && vitepress dev docs",
     "docs:build": "npm run docs && vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "check": "npm run lint && npm run typecheck && npm run barrels:check && npm run exports:check && npm run test -- --coverage && npm run docs:check && npm run build && publint && attw --pack --profile esm-only"
+    "check": "npm run lint && npm run typecheck && npm run barrels:check && npm run exports:check && npm run test -- --coverage && npm run docs:check && npm run build && publint && attw --pack --ignore-rules cjs-resolves-to-esm --exclude-entrypoints package.json"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.0",

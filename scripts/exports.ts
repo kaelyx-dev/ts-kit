@@ -46,20 +46,38 @@ const buildExports = (): Record<string, unknown> => {
   return exportsMap
 }
 
+// TypeScript's legacy "node" (node10) resolution ignores "exports", so mirror each subpath here.
+// Explicit entries (rather than a "*" wildcard) stop editors suggesting unexported paths.
+const buildTypesVersions = (exportsMap: Record<string, unknown>): Record<string, unknown> => {
+  const paths: Record<string, string[]> = {}
+  for (const [subpath, entry] of Object.entries(exportsMap)) {
+    if (subpath === '.' || typeof entry !== 'object' || entry === null) continue
+    paths[subpath.slice(2)] = [(entry as { types: string }).types]
+  }
+  return { '*': paths }
+}
+
 const checkMode = process.argv.includes('--check')
 
 const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'))
 const expected = buildExports()
+const expectedTypesVersions = buildTypesVersions(expected)
 
-if (JSON.stringify(pkg.exports) === JSON.stringify(expected)) {
+if (
+  JSON.stringify(pkg.exports) === JSON.stringify(expected) &&
+  JSON.stringify(pkg.typesVersions) === JSON.stringify(expectedTypesVersions)
+) {
   process.exit(0)
 }
 
 if (checkMode) {
-  console.error('package.json "exports" is out of date. Run "npm run exports" to fix this.')
+  console.error(
+    'package.json "exports" or "typesVersions" is out of date. Run "npm run exports" to fix this.',
+  )
   process.exit(1)
 }
 
+pkg.typesVersions = expectedTypesVersions
 pkg.exports = expected
 writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`)
-console.log('Wrote package.json exports map.')
+console.log('Wrote package.json exports map and typesVersions.')
