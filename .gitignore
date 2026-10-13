@@ -1,5 +1,4 @@
 node_modules/
-dist/
 coverage/
 docs/api/
 docs/.vitepress/cache/
@@ -8,3 +7,30 @@ docs/contributing.md
 docs/ai-policy.md
 *.log
 .DS_Store
+
+# Build output, written by "npm run exports"
+/_internal/
+/array/
+/array.d.ts
+/array.js
+/function/
+/function.d.ts
+/function.js
+/index.d.ts
+/index.js
+/number/
+/number.d.ts
+/number.js
+/object/
+/object.d.ts
+/object.js
+/result/
+/result.d.ts
+/result.js
+/string/
+/string.d.ts
+/string.js
+/types/
+/types.d.ts
+/types.js
+# End of build output
