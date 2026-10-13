@@ -1,5 +1,16 @@
 # @kaelyx/ts-kit
 
+## 0.6.0
+
+### Minor Changes
+
+- 871252e: Added clamp number function
+- 842daa2: Added Debounce and Debounce with Abort
+- 7fc72d3: Added template function which replaces text in a string based on an object of placeholders and values
+- 7fc72d3: added withDefaults function that allows for narrow typing option objects in functions to have assigned defaults
+- ffe07b3: added Pick and Omit functions to object category, these work closes with the Typescript types Pick and Omit respectivel
+- 7fc72d3: Added valueof type to help simplify `as const` enum assignments to types
+
 ## 0.5.0
 
 ### Minor Changes
