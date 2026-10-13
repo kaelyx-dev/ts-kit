@@ -6,5 +6,5 @@
  * Keys present in `D` are made required and their `undefined` type is excluded from `T`.
  */
 export type WithDefaults<T, D> = Omit<T, keyof D> & {
-  [K in keyof D & keyof T]-?: Exclude<T[K], undefined>;
-};
+  [K in keyof D & keyof T]-?: Exclude<T[K], undefined>
+}

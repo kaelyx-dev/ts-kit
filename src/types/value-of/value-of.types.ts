@@ -12,5 +12,4 @@
  *
  * @category types
  */
-export type ValueOf<T> = T extends readonly unknown[] ? T[number] : T[keyof T];
-
+export type ValueOf<T> = T extends readonly unknown[] ? T[number] : T[keyof T]

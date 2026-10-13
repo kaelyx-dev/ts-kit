@@ -1,11 +1,25 @@
 // Public types for template.
 // Every exported name must start with "Template".
 
-import type { ValueOf } from "../../types"
+import type { ValueOf } from '../../types'
 
+/** The values for {@link TemplateOptions.replaceBehaviour}. */
+export const TemplateOptionsReplaceBehaviour = {
+  /** Replace every placeholder. */
+  replaceAll: 'REPLACE_ALL',
+  /** Replace only the first placeholder that the pattern matches. */
+  replaceFirst: 'REPLACE_FIRST',
+} as const
 
-export const TemplateOptionsReplaceBehaviour = { replaceAll: 'REPLACE_ALL', replaceFirst: 'REPLACE_FIRST' } as const
-export const TemplateOptionsUnknownBehaviour = { ignore: 'IGNORE', remove: 'REMOVE', throw: 'THROW' } as const
+/** The values for {@link TemplateOptions.unknownBehaviour}. */
+export const TemplateOptionsUnknownBehaviour = {
+  /** Leave the placeholder in the output. */
+  ignore: 'IGNORE',
+  /** Remove the placeholder from the output. */
+  remove: 'REMOVE',
+  /** Throw an error. */
+  throw: 'THROW',
+} as const
 
 /** The behavior for how replacements are applied. */
 export type TemplateOptionsReplaceBehaviour = ValueOf<typeof TemplateOptionsReplaceBehaviour>
@@ -17,12 +31,12 @@ export type TemplateOptionsUnknownBehaviour = ValueOf<typeof TemplateOptionsUnkn
  * Options for configuring template behavior.
  */
 export interface TemplateOptions {
-    /** Determines how replacements are applied. @default TemplateOptionsReplaceBehaviour.replaceAll */
-    replaceBehaviour?: TemplateOptionsReplaceBehaviour
+  /** Determines how replacements are applied. @default TemplateOptionsReplaceBehaviour.replaceAll */
+  replaceBehaviour?: TemplateOptionsReplaceBehaviour
 
-    /** Placeholder Pattern @default /\{\{(\w+)\}\}/g */
-    placeholderPattern?: RegExp
+  /** Placeholder Pattern @default /\{\{(\w+)\}\}/g */
+  placeholderPattern?: RegExp
 
-    /** Determines what the function does if it encounters an unknown placeholder. @default TemplateOptionsUnknownBehaviour.ignore */
-    unknownBehaviour?: TemplateOptionsUnknownBehaviour
+  /** Determines what the function does if it encounters an unknown placeholder. @default TemplateOptionsUnknownBehaviour.ignore */
+  unknownBehaviour?: TemplateOptionsUnknownBehaviour
 }

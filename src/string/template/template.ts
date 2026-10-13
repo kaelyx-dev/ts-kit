@@ -1,5 +1,9 @@
 import { withDefaults } from '../../object/with-defaults/with-defaults'
-import { TemplateOptionsReplaceBehaviour, TemplateOptionsUnknownBehaviour, type TemplateOptions } from './template.types'
+import {
+  type TemplateOptions,
+  TemplateOptionsReplaceBehaviour,
+  TemplateOptionsUnknownBehaviour,
+} from './template.types'
 
 export type * from './template.types'
 

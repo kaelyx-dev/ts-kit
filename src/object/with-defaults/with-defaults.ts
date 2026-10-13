@@ -23,6 +23,6 @@ export function withDefaults<T extends object, D extends Partial<T>>(
 ): WithDefaults<T, D> {
   const definedInput = Object.fromEntries(
     Object.entries(input ?? {}).filter(([, value]) => value !== undefined),
-  );
-  return { ...defaults, ...definedInput } as WithDefaults<T, D>;
+  )
+  return { ...defaults, ...definedInput } as WithDefaults<T, D>
 }
