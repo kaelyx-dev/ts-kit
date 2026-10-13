@@ -1,35 +1,21 @@
-import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { listCategories, listFunctions, outputDirectories, outputPaths, root } from './layout'
 
-// Writes (or checks) package.json's "exports" map from the src/ directory structure.
-// Run with --check to verify package.json matches what this script would write.
+// Writes (or checks) package.json's "exports", "typesVersions" and "files" from the src/ directory
+// structure, and the block of build output paths in .gitignore.
+// Run with --check to verify both files match what this script would write.
 // Keep this in sync with the entry globs in tsdown.config.ts.
 
-const root = join(import.meta.dirname, '..')
-const srcDir = join(root, 'src')
 const pkgPath = join(root, 'package.json')
+const gitignorePath = join(root, '.gitignore')
 
-const isDirectory = (path: string): boolean => {
-  try {
-    return statSync(path).isDirectory()
-  } catch {
-    return false
-  }
-}
-
-const listCategories = (): string[] =>
-  readdirSync(srcDir)
-    .filter((name) => name !== '_internal' && isDirectory(join(srcDir, name)))
-    .sort()
-
-const listFunctions = (category: string): string[] =>
-  readdirSync(join(srcDir, category))
-    .filter((name) => isDirectory(join(srcDir, category, name)))
-    .sort()
+const gitignoreStart = '# Build output, written by "npm run exports"'
+const gitignoreEnd = '# End of build output'
 
 const subpathEntry = (subpath: string) => ({
-  types: `./dist/${subpath}.d.ts`,
-  default: `./dist/${subpath}.js`,
+  types: `./${subpath}.d.ts`,
+  default: `./${subpath}.js`,
 })
 
 const buildExports = (): Record<string, unknown> => {
@@ -57,27 +43,49 @@ const buildTypesVersions = (exportsMap: Record<string, unknown>): Record<string,
   return { '*': paths }
 }
 
+const buildGitignore = (current: string): string => {
+  const directories = new Set(outputDirectories())
+  const block = [
+    gitignoreStart,
+    ...outputPaths().map((path) => (directories.has(path) ? `/${path}/` : `/${path}`)),
+    gitignoreEnd,
+  ].join('\n')
+  const start = current.indexOf(gitignoreStart)
+  const end = current.indexOf(gitignoreEnd)
+  if (start === -1 || end === -1) {
+    return `${current.trimEnd()}\n\n${block}\n`
+  }
+  return current.slice(0, start) + block + current.slice(end + gitignoreEnd.length)
+}
+
 const checkMode = process.argv.includes('--check')
 
 const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'))
 const expected = buildExports()
 const expectedTypesVersions = buildTypesVersions(expected)
+const expectedFiles = outputPaths()
+const gitignore = readFileSync(gitignorePath, 'utf8')
+const expectedGitignore = buildGitignore(gitignore)
 
 if (
   JSON.stringify(pkg.exports) === JSON.stringify(expected) &&
-  JSON.stringify(pkg.typesVersions) === JSON.stringify(expectedTypesVersions)
+  JSON.stringify(pkg.typesVersions) === JSON.stringify(expectedTypesVersions) &&
+  JSON.stringify(pkg.files) === JSON.stringify(expectedFiles) &&
+  gitignore === expectedGitignore
 ) {
   process.exit(0)
 }
 
 if (checkMode) {
   console.error(
-    'package.json "exports" or "typesVersions" is out of date. Run "npm run exports" to fix this.',
+    'package.json ("exports", "typesVersions" or "files") or .gitignore is out of date. Run "npm run exports" to fix this.',
   )
   process.exit(1)
 }
 
+pkg.files = expectedFiles
 pkg.typesVersions = expectedTypesVersions
 pkg.exports = expected
 writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`)
-console.log('Wrote package.json exports map and typesVersions.')
+writeFileSync(gitignorePath, expectedGitignore)
+console.log('Wrote package.json exports, typesVersions and files, and the .gitignore build block.')

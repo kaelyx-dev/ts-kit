@@ -7,7 +7,10 @@ Every script lives in `package.json`. Run them with `npm run <script>`.
 | `new` | Scaffolds a new function: `npm run new -- <category> <name>`. Writes the three files, then runs `barrels`. With the category `type`, scaffolds a standalone type instead: `npm run new -- type <name>` writes two files in `src/types/<name>/`. |
 | `barrels` | Writes `src/index.ts`, every `src/<category>/index.ts`, and `src/types/index.ts`. Never edit these files by hand. |
 | `barrels:check` | Compares the barrels on disk against what `barrels` would write. Fails if they differ. This is what CI runs. |
-| `build` | Builds `dist/` with tsdown, from the glob of category and function files. |
+| `exports` | Writes `exports`, `typesVersions` and `files` in `package.json`, and the build output block in `.gitignore`, from the folders in `src`. Never edit these by hand. |
+| `exports:check` | Compares those fields and that block against what `exports` would write. Fails if they differ. |
+| `clean` | Deletes the build output from the package root. It deletes only the paths that `build` writes, and an old `dist/` folder if one exists. |
+| `build` | Runs `clean`, then builds with tsdown from the glob of category and function files. The output goes into the package root (for example `number/clamp.js`), not into `dist/`. Editors that make import paths from file locations then suggest paths that work. |
 | `test` | Runs the Vitest suite once. |
 | `test:watch` | Runs Vitest in watch mode, for use while developing. |
 | `typecheck` | Runs `tsc --noEmit` over `src` and `scripts`. |

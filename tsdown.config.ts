@@ -19,7 +19,10 @@ export default defineConfig({
   format: ['esm'],
   dts: true,
   treeshake: true,
-  clean: true,
+  // Output goes to the package root (see scripts/layout.ts), so tsdown must not clean it.
+  // "npm run build" runs scripts/clean.ts first instead.
+  outDir: '.',
+  clean: false,
   fixedExtension: false,
   unbundle: true,
 })

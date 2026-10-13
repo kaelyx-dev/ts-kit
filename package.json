@@ -6,7 +6,30 @@
   "type": "module",
   "sideEffects": false,
   "files": [
-    "dist"
+    "_internal",
+    "array",
+    "array.d.ts",
+    "array.js",
+    "function",
+    "function.d.ts",
+    "function.js",
+    "index.d.ts",
+    "index.js",
+    "number",
+    "number.d.ts",
+    "number.js",
+    "object",
+    "object.d.ts",
+    "object.js",
+    "result",
+    "result.d.ts",
+    "result.js",
+    "string",
+    "string.d.ts",
+    "string.js",
+    "types",
+    "types.d.ts",
+    "types.js"
   ],
   "homepage": "https://kaelyx.dev/ts-kit/",
   "engines": {
@@ -20,204 +43,204 @@
     "access": "public",
     "provenance": true
   },
-  "types": "./dist/index.d.ts",
+  "types": "./index.d.ts",
   "typesVersions": {
     "*": {
       "array": [
-        "./dist/array.d.ts"
+        "./array.d.ts"
       ],
       "array/concatenate": [
-        "./dist/array/concatenate.d.ts"
+        "./array/concatenate.d.ts"
       ],
       "function": [
-        "./dist/function.d.ts"
+        "./function.d.ts"
       ],
       "function/debounce": [
-        "./dist/function/debounce.d.ts"
+        "./function/debounce.d.ts"
       ],
       "function/debounce-with-abort": [
-        "./dist/function/debounce-with-abort.d.ts"
+        "./function/debounce-with-abort.d.ts"
       ],
       "number": [
-        "./dist/number.d.ts"
+        "./number.d.ts"
       ],
       "number/clamp": [
-        "./dist/number/clamp.d.ts"
+        "./number/clamp.d.ts"
       ],
       "object": [
-        "./dist/object.d.ts"
+        "./object.d.ts"
       ],
       "object/from-query-string": [
-        "./dist/object/from-query-string.d.ts"
+        "./object/from-query-string.d.ts"
       ],
       "object/omit": [
-        "./dist/object/omit.d.ts"
+        "./object/omit.d.ts"
       ],
       "object/pick": [
-        "./dist/object/pick.d.ts"
+        "./object/pick.d.ts"
       ],
       "object/to-query-string": [
-        "./dist/object/to-query-string.d.ts"
+        "./object/to-query-string.d.ts"
       ],
       "object/with-defaults": [
-        "./dist/object/with-defaults.d.ts"
+        "./object/with-defaults.d.ts"
       ],
       "result": [
-        "./dist/result.d.ts"
+        "./result.d.ts"
       ],
       "result/err": [
-        "./dist/result/err.d.ts"
+        "./result/err.d.ts"
       ],
       "result/ok": [
-        "./dist/result/ok.d.ts"
+        "./result/ok.d.ts"
       ],
       "result/unwrap": [
-        "./dist/result/unwrap.d.ts"
+        "./result/unwrap.d.ts"
       ],
       "result/unwrap-or": [
-        "./dist/result/unwrap-or.d.ts"
+        "./result/unwrap-or.d.ts"
       ],
       "string": [
-        "./dist/string.d.ts"
+        "./string.d.ts"
       ],
       "string/exclamationmark": [
-        "./dist/string/exclamationmark.d.ts"
+        "./string/exclamationmark.d.ts"
       ],
       "string/fullstop": [
-        "./dist/string/fullstop.d.ts"
+        "./string/fullstop.d.ts"
       ],
       "string/is-json": [
-        "./dist/string/is-json.d.ts"
+        "./string/is-json.d.ts"
       ],
       "string/parse-json": [
-        "./dist/string/parse-json.d.ts"
+        "./string/parse-json.d.ts"
       ],
       "string/questionmark": [
-        "./dist/string/questionmark.d.ts"
+        "./string/questionmark.d.ts"
       ],
       "string/template": [
-        "./dist/string/template.d.ts"
+        "./string/template.d.ts"
       ],
       "string/truncate": [
-        "./dist/string/truncate.d.ts"
+        "./string/truncate.d.ts"
       ],
       "types": [
-        "./dist/types.d.ts"
+        "./types.d.ts"
       ]
     }
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "types": "./index.d.ts",
+      "default": "./index.js"
     },
     "./array": {
-      "types": "./dist/array.d.ts",
-      "default": "./dist/array.js"
+      "types": "./array.d.ts",
+      "default": "./array.js"
     },
     "./array/concatenate": {
-      "types": "./dist/array/concatenate.d.ts",
-      "default": "./dist/array/concatenate.js"
+      "types": "./array/concatenate.d.ts",
+      "default": "./array/concatenate.js"
     },
     "./function": {
-      "types": "./dist/function.d.ts",
-      "default": "./dist/function.js"
+      "types": "./function.d.ts",
+      "default": "./function.js"
     },
     "./function/debounce": {
-      "types": "./dist/function/debounce.d.ts",
-      "default": "./dist/function/debounce.js"
+      "types": "./function/debounce.d.ts",
+      "default": "./function/debounce.js"
     },
     "./function/debounce-with-abort": {
-      "types": "./dist/function/debounce-with-abort.d.ts",
-      "default": "./dist/function/debounce-with-abort.js"
+      "types": "./function/debounce-with-abort.d.ts",
+      "default": "./function/debounce-with-abort.js"
     },
     "./number": {
-      "types": "./dist/number.d.ts",
-      "default": "./dist/number.js"
+      "types": "./number.d.ts",
+      "default": "./number.js"
     },
     "./number/clamp": {
-      "types": "./dist/number/clamp.d.ts",
-      "default": "./dist/number/clamp.js"
+      "types": "./number/clamp.d.ts",
+      "default": "./number/clamp.js"
     },
     "./object": {
-      "types": "./dist/object.d.ts",
-      "default": "./dist/object.js"
+      "types": "./object.d.ts",
+      "default": "./object.js"
     },
     "./object/from-query-string": {
-      "types": "./dist/object/from-query-string.d.ts",
-      "default": "./dist/object/from-query-string.js"
+      "types": "./object/from-query-string.d.ts",
+      "default": "./object/from-query-string.js"
     },
     "./object/omit": {
-      "types": "./dist/object/omit.d.ts",
-      "default": "./dist/object/omit.js"
+      "types": "./object/omit.d.ts",
+      "default": "./object/omit.js"
     },
     "./object/pick": {
-      "types": "./dist/object/pick.d.ts",
-      "default": "./dist/object/pick.js"
+      "types": "./object/pick.d.ts",
+      "default": "./object/pick.js"
     },
     "./object/to-query-string": {
-      "types": "./dist/object/to-query-string.d.ts",
-      "default": "./dist/object/to-query-string.js"
+      "types": "./object/to-query-string.d.ts",
+      "default": "./object/to-query-string.js"
     },
     "./object/with-defaults": {
-      "types": "./dist/object/with-defaults.d.ts",
-      "default": "./dist/object/with-defaults.js"
+      "types": "./object/with-defaults.d.ts",
+      "default": "./object/with-defaults.js"
     },
     "./result": {
-      "types": "./dist/result.d.ts",
-      "default": "./dist/result.js"
+      "types": "./result.d.ts",
+      "default": "./result.js"
     },
     "./result/err": {
-      "types": "./dist/result/err.d.ts",
-      "default": "./dist/result/err.js"
+      "types": "./result/err.d.ts",
+      "default": "./result/err.js"
     },
     "./result/ok": {
-      "types": "./dist/result/ok.d.ts",
-      "default": "./dist/result/ok.js"
+      "types": "./result/ok.d.ts",
+      "default": "./result/ok.js"
     },
     "./result/unwrap": {
-      "types": "./dist/result/unwrap.d.ts",
-      "default": "./dist/result/unwrap.js"
+      "types": "./result/unwrap.d.ts",
+      "default": "./result/unwrap.js"
     },
     "./result/unwrap-or": {
-      "types": "./dist/result/unwrap-or.d.ts",
-      "default": "./dist/result/unwrap-or.js"
+      "types": "./result/unwrap-or.d.ts",
+      "default": "./result/unwrap-or.js"
     },
     "./string": {
-      "types": "./dist/string.d.ts",
-      "default": "./dist/string.js"
+      "types": "./string.d.ts",
+      "default": "./string.js"
     },
     "./string/exclamationmark": {
-      "types": "./dist/string/exclamationmark.d.ts",
-      "default": "./dist/string/exclamationmark.js"
+      "types": "./string/exclamationmark.d.ts",
+      "default": "./string/exclamationmark.js"
     },
     "./string/fullstop": {
-      "types": "./dist/string/fullstop.d.ts",
-      "default": "./dist/string/fullstop.js"
+      "types": "./string/fullstop.d.ts",
+      "default": "./string/fullstop.js"
     },
     "./string/is-json": {
-      "types": "./dist/string/is-json.d.ts",
-      "default": "./dist/string/is-json.js"
+      "types": "./string/is-json.d.ts",
+      "default": "./string/is-json.js"
     },
     "./string/parse-json": {
-      "types": "./dist/string/parse-json.d.ts",
-      "default": "./dist/string/parse-json.js"
+      "types": "./string/parse-json.d.ts",
+      "default": "./string/parse-json.js"
     },
     "./string/questionmark": {
-      "types": "./dist/string/questionmark.d.ts",
-      "default": "./dist/string/questionmark.js"
+      "types": "./string/questionmark.d.ts",
+      "default": "./string/questionmark.js"
     },
     "./string/template": {
-      "types": "./dist/string/template.d.ts",
-      "default": "./dist/string/template.js"
+      "types": "./string/template.d.ts",
+      "default": "./string/template.js"
     },
     "./string/truncate": {
-      "types": "./dist/string/truncate.d.ts",
-      "default": "./dist/string/truncate.js"
+      "types": "./string/truncate.d.ts",
+      "default": "./string/truncate.js"
     },
     "./types": {
-      "types": "./dist/types.d.ts",
-      "default": "./dist/types.js"
+      "types": "./types.d.ts",
+      "default": "./types.js"
     },
     "./package.json": "./package.json"
   },
@@ -227,7 +250,8 @@
     "barrels:check": "tsx scripts/barrels.ts --check",
     "exports": "tsx scripts/exports.ts",
     "exports:check": "tsx scripts/exports.ts --check",
-    "build": "tsdown",
+    "clean": "tsx scripts/clean.ts",
+    "build": "npm run clean && tsdown",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
