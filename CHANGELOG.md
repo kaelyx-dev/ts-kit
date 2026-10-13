@@ -1,5 +1,11 @@
 # @kaelyx/ts-kit
 
+## 0.6.1
+
+### Patch Changes
+
+- bb75d67: Fix type resolution for consumers using `moduleResolution: "node"` (node10). Subpath imports such as `@kaelyx/ts-kit/number/clamp` now resolve and appear in IntelliSense, instead of auto-import suggesting the unexported `dist/...` path.
+
 ## 0.6.0
 
 ### Minor Changes
