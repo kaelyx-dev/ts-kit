@@ -33,6 +33,18 @@
       "types": "./dist/array/concatenate.d.ts",
       "default": "./dist/array/concatenate.js"
     },
+    "./function": {
+      "types": "./dist/function.d.ts",
+      "default": "./dist/function.js"
+    },
+    "./function/debounce": {
+      "types": "./dist/function/debounce.d.ts",
+      "default": "./dist/function/debounce.js"
+    },
+    "./function/debounce-with-abort": {
+      "types": "./dist/function/debounce-with-abort.d.ts",
+      "default": "./dist/function/debounce-with-abort.js"
+    },
     "./number": {
       "types": "./dist/number.d.ts",
       "default": "./dist/number.js"
