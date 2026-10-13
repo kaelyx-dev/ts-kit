@@ -45,6 +45,10 @@
       "types": "./dist/object/to-query-string.d.ts",
       "default": "./dist/object/to-query-string.js"
     },
+    "./object/with-defaults": {
+      "types": "./dist/object/with-defaults.d.ts",
+      "default": "./dist/object/with-defaults.js"
+    },
     "./result": {
       "types": "./dist/result.d.ts",
       "default": "./dist/result.js"
@@ -88,6 +92,10 @@
     "./string/questionmark": {
       "types": "./dist/string/questionmark.d.ts",
       "default": "./dist/string/questionmark.js"
+    },
+    "./string/template": {
+      "types": "./dist/string/template.d.ts",
+      "default": "./dist/string/template.js"
     },
     "./string/truncate": {
       "types": "./dist/string/truncate.d.ts",
