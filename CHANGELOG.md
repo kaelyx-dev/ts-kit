@@ -1,5 +1,19 @@
 # @kaelyx/ts-kit
 
+## 0.5.0
+
+### Minor Changes
+
+- aea1bd5: `toQueryString` and `fromQueryString` now throw a `RangeError` if `deepLimit` is not an integer of 0 or more, or `Infinity`. `toQueryString` also throws a `RangeError` for the same condition in `serialiseLimit`. Before this change, a value such as `1.5` or `-1` was accepted, and the decoder split keys at a different level from the encoder.
+- 1ea4b13: `toQueryString` now throws a `TypeError` if an object has an enumerable symbol key. Before this change, `Object.entries` skipped the key, and its data was lost with no error. The message contains the key path, for example `filters.Symbol(s)`. A symbol key that is not enumerable is ignored.
+- c1d6a6a: Remove the `ToQueryStringResolvedOptions` and `FromQueryStringResolvedOptions` types from the public API. They were internal types, and the `@internal` tag hid them only in the docs. Use `ToQueryStringOptions` and `FromQueryStringOptions` instead.
+- 3ada5cf: Add a `unit` option to `truncate`. Set it to `'codeUnit'` to fit a limit on `.length`, or to `'byte'` to fit a limit in UTF-8 bytes. The default is `'grapheme'`, so the default behaviour does not change. In each unit, the cut is between graphemes, so the result can be shorter than `length`, or empty.
+
+### Patch Changes
+
+- 12b3328: Document how `truncate` counts length. With the default unit, the result can have a `.length` that is more than `length`. The docs now tell you which `unit` to use for each type of limit.
+- 5942d7c: `truncate` now reads only the graphemes that it needs. Before this change, it segmented all of the input before the cut, so a long input was slow to truncate. The result does not change.
+
 ## 0.4.1
 
 ### Patch Changes
