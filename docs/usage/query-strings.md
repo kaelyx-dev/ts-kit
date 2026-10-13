@@ -7,7 +7,7 @@ fromQueryString(toQueryString(value, options), options) // equals value, within 
 ```
 
 This page is the specification. Each row of the table has a test in each mode, in
-`src/object/query-string.round-trip.test.ts`. If you change a row, change its tests.
+`src/object/to-query-string/to-query-string.test.ts`. If you change a row, change its tests.
 
 ## Modes
 
