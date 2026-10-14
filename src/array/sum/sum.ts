@@ -49,7 +49,6 @@ export function sum(
     readonly missingBehaviour?: SumOptionsMissingBehaviour
   },
 ): number {
-
   const opts = withDefaults(options, {
     key: undefined,
     initialValue: 0,
@@ -64,7 +63,9 @@ export function sum(
     const value = (item as Record<PropertyKey, number | undefined>)[opts.key]
     if (value !== undefined) return total + value
     if (missingBehaviour === SumOptionsMissingBehaviour.throw) {
-      throw new TypeError(`sum: the item at index ${index} has no value at key "${String(opts.key)}"`)
+      throw new TypeError(
+        `sum: the item at index ${index} has no value at key "${String(opts.key)}"`,
+      )
     }
     return total
   }, opts.initialValue)

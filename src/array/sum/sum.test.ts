@@ -57,15 +57,17 @@ describe('sum', () => {
   describe('missingBehaviour', () => {
     const items: { price?: number }[] = [{ price: 2 }, {}, { price: undefined }, { price: 3 }]
 
-    it('throws by default when an object has no value at key', () => {
-      expect(() => sum(items, { key: 'price' })).toThrow(TypeError)
-      expect(() => sum(items, { key: 'price' })).toThrow('index 1')
+    it('adds 0 for a missing value by default', () => {
+      expect(sum(items, { key: 'price' })).toBe(5)
     })
 
     it('throws with "throw"', () => {
       expect(() =>
         sum(items, { key: 'price', missingBehaviour: SumOptionsMissingBehaviour.throw }),
       ).toThrow(TypeError)
+      expect(() =>
+        sum(items, { key: 'price', missingBehaviour: SumOptionsMissingBehaviour.throw }),
+      ).toThrow('index 1')
     })
 
     it('adds 0 for a missing value with "zero"', () => {
