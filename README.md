@@ -1,6 +1,7 @@
 # @kaelyx/ts-kit
 
 [![npm version](https://img.shields.io/npm/v/@kaelyx/ts-kit.svg)](https://www.npmjs.com/package/@kaelyx/ts-kit)
+[![downloads](https://img.shields.io/npm/dt/@kaelyx/ts-kit.svg)](https://www.npmjs.com/package/@kaelyx/ts-kit)
 [![CI](https://github.com/kaelyx-dev/ts-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/kaelyx-dev/ts-kit/actions/workflows/ci.yml)
 [![licence: MIT](https://img.shields.io/npm/l/@kaelyx/ts-kit.svg)](https://github.com/kaelyx-dev/ts-kit/blob/main/LICENSE)
 
