@@ -80,23 +80,17 @@ unwrapOr(parseJson('not json'), {}) // {}
 
 ### Write and read query strings
 
-`toQueryString` and `fromQueryString` are inverse functions. The default mode returns strings. JSON mode keeps numbers, booleans and `null`.
+`toQueryString` and `fromQueryString` are thin wrappers around `URLSearchParams` for flat objects. An array is written as repeated keys, `null` as an empty string, and a date as an ISO string. `undefined` is omitted.
 
 ```ts
 import { toQueryString, fromQueryString } from '@kaelyx/ts-kit/object'
 
-const search = { q: 'shoes', page: 2, filters: { size: 9 }, tags: ['new', 'sale'] }
-
-toQueryString(search) // 'q=shoes&page=2&filters.size=9&tags=new&tags=sale'
-fromQueryString('q=shoes&page=2&filters.size=9&tags=new&tags=sale')
-// { q: 'shoes', page: '2', filters: { size: '9' }, tags: ['new', 'sale'] }
-
-const query = toQueryString(search, { mode: 'json' })
-fromQueryString(query, { mode: 'json' })
-// { q: 'shoes', page: 2, filters: { size: 9 }, tags: ['new', 'sale'] }
+toQueryString({ q: 'shoes', page: 2, tags: ['new', 'sale'] }) // 'q=shoes&page=2&tags=new&tags=sale'
+fromQueryString('q=shoes&page=2&tags=new&tags=sale')
+// { q: 'shoes', page: '2', tags: ['new', 'sale'] }
 ```
 
-The [query string contract](https://kaelyx.dev/ts-kit/usage/query-strings) gives the full rules and the known limits.
+The [query strings guide](https://kaelyx.dev/ts-kit/usage/query-strings) gives the rules for each type of value.
 
 The [roadmap](https://kaelyx.dev/ts-kit/roadmap) lists the functions that we plan to add.
 

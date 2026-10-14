@@ -1,51 +1,17 @@
-import type {
-  QueryStringDeepOptions,
-  QueryStringShallowOptions,
-} from '../../_internal/object/query-string/query-string.types'
-
-interface ToQueryStringOptionsBase {
-  /**
-   * The number of nesting levels that a value written as JSON can have. If the value goes
-   * deeper, `toQueryString` throws a `TypeError`. It never truncates the data.
-   * @default Infinity
-   */
-  serialiseLimit?: number
-}
+// Public types for to-query-string.
+// Every exported name must start with "ToQueryString".
 
 /**
- * Options for `toQueryString` when nested objects are not flattened.
+ * A value that `toQueryString` can write. `undefined` is omitted, `null` is written as an empty
+ * string, and a date as an ISO string.
  *
  * @category object
  */
-export interface ToQueryStringOptionsShallow
-  extends ToQueryStringOptionsBase,
-    QueryStringShallowOptions {
-  /** Nested objects are serialised as a single JSON-string param instead of flattened. */
-  deep: false
-  /**
-   * Whether nested objects are serialised to JSON at all.
-   * If `false`, keys whose value is a nested object are dropped.
-   * @default true
-   */
-  serialiseOnShallow?: boolean
-}
+export type ToQueryStringValue = string | number | boolean | Date | null | undefined
 
 /**
- * Options for `toQueryString` when nested objects are flattened into separate keys. This is the default.
+ * The input of `toQueryString`: a flat object. An array value is written as repeated keys.
  *
  * @category object
  */
-export interface ToQueryStringOptionsDeep extends ToQueryStringOptionsBase, QueryStringDeepOptions {
-  /**
-   * What happens to a nested object once `deepLimit` is reached.
-   * @default true
-   */
-  serialiseOnDeepLimitExceeded?: boolean
-}
-
-/**
- * Options for `toQueryString`. Set `deep: false` to keep nested objects as JSON strings.
- *
- * @category object
- */
-export type ToQueryStringOptions = ToQueryStringOptionsShallow | ToQueryStringOptionsDeep
+export type ToQueryStringInput = Record<string, ToQueryStringValue | readonly ToQueryStringValue[]>
