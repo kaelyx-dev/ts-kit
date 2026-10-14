@@ -45,10 +45,18 @@ const pascalCase = (name: string): string => name.charAt(0).toUpperCase() + name
 
 const anchorFor = (name: string): string => name.toLowerCase()
 
+// TypeDoc writes each link relative to the page it is on. A section moves to another folder, so
+// its relative links are rewritten to point from the function page instead.
+const rebaseLinks = (line: string, from: string, to: string): string =>
+  line.replace(/\]\(([^)\s#:]+\.md)((?:#[^)\s]*)?)\)/g, (_link, path: string, hash: string) => {
+    const target = relative(dirname(to), resolve(dirname(from), path)).replace(/\\/g, '/')
+    return `](${target}${hash})`
+  })
+
 // Turns a TypeDoc type page into a "###" section: drops the breadcrumb, replaces the
-// "# Interface: Name" title, and moves every other heading down two levels. Headings inside
-// code fences are left alone.
-const toSection = ({ name, file, label }: TypePage): string => {
+// "# Interface: Name" title, moves every other heading down two levels, and rebases relative
+// links onto `page`. Headings and links inside code fences are left alone.
+const toSection = ({ name, file, label }: TypePage, page: string): string => {
   let inFence = false
   const body = readFileSync(file, 'utf8')
     .split(/\r?\n/)
@@ -61,7 +69,7 @@ const toSection = ({ name, file, label }: TypePage): string => {
         return `### ${title} <Badge type="info" text="${label}" /> {#${anchorFor(name)}}`
       }
       const heading = /^(#{1,6}) (.*)$/.exec(line)
-      if (!heading) return line
+      if (!heading) return rebaseLinks(line, file, page)
       const [, hashes = '', text = ''] = heading
       return `${'#'.repeat(Math.min(hashes.length + 2, 6))} ${text}`
     })
@@ -99,7 +107,7 @@ for (const category of categories) {
   for (const [fn, types] of owned) {
     if (types.length === 0) continue
     const page = join(categoryDir, 'functions', `${fn}.md`)
-    const sections = types.map(toSection).join('\n\n***\n\n')
+    const sections = types.map((type) => toSection(type, page)).join('\n\n***\n\n')
     const content = readFileSync(page, 'utf8').trimEnd()
     writeFileSync(page, `${content}\n\n## Types\n\n${sections}\n`)
     for (const type of types) moved.set(type.file, { page, anchor: anchorFor(type.name) })
@@ -107,6 +115,35 @@ for (const category of categories) {
   }
 
   for (const { dir } of kinds) rmSync(join(categoryDir, dir), { recursive: true, force: true })
+}
+
+// TypeDoc gives every overload of a function the same "## Call Signature" heading, so the page
+// outline repeats it. Each heading is renamed after the signature line under it, without the
+// return type: "> **sum**\<`T`\>(`array`, `options`): `number`" gives "sum\<T\>(array, options)".
+const signatureHeading = (signature: string): string =>
+  signature
+    .replace(/^> /, '')
+    .replace(/[`*]/g, '')
+    .replace(/\\</g, '<')
+    .replace(/\\>/g, '>')
+    .replace(/\):[^)]*$/, ')')
+    .replace(/</g, '\\<')
+    .replace(/>/g, '\\>')
+
+for (const category of categories) {
+  for (const name of listPages(join(apiDir, category, 'functions'))) {
+    const page = join(apiDir, category, 'functions', `${name}.md`)
+    const lines = readFileSync(page, 'utf8').split(/\r?\n/)
+    let renamed = false
+    lines.forEach((line, index) => {
+      if (line !== '## Call Signature') return
+      const signature = lines.slice(index + 1).find((next) => next.startsWith('> '))
+      if (!signature) return
+      lines[index] = `## ${signatureHeading(signature)}`
+      renamed = true
+    })
+    if (renamed) writeFileSync(page, lines.join('\n'))
+  }
 }
 
 // Every relative link that pointed at a moved page now points at its anchor. On the function

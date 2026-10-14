@@ -52,6 +52,9 @@
       "array/concatenate": [
         "./array/concatenate.d.ts"
       ],
+      "array/sum": [
+        "./array/sum.d.ts"
+      ],
       "function": [
         "./function.d.ts"
       ],
@@ -141,6 +144,10 @@
     "./array/concatenate": {
       "types": "./array/concatenate.d.ts",
       "default": "./array/concatenate.js"
+    },
+    "./array/sum": {
+      "types": "./array/sum.d.ts",
+      "default": "./array/sum.js"
     },
     "./function": {
       "types": "./function.d.ts",
