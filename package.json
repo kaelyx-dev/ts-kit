@@ -272,11 +272,12 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "docs": "tsx scripts/copy-docs.ts && typedoc && tsx scripts/inline-types.ts",
+    "size": "tsx scripts/size.ts",
     "docs:check": "typedoc --emit none --validation.notDocumented --treatWarningsAsErrors",
     "docs:dev": "npm run docs && vitepress dev docs",
     "docs:build": "npm run docs && vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "check": "npm run lint && npm run typecheck && npm run barrels:check && npm run exports:check && npm run test -- --coverage && npm run docs:check && npm run build && publint && attw --pack --ignore-rules cjs-resolves-to-esm --exclude-entrypoints package.json"
+    "check": "npm run lint && npm run typecheck && npm run barrels:check && npm run exports:check && npm run test -- --coverage && npm run docs:check && npm run build && publint && attw --pack --ignore-rules cjs-resolves-to-esm --exclude-entrypoints package.json && npm run size"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.0",
@@ -284,6 +285,7 @@
     "@changesets/cli": "^2.27.0",
     "@types/node": "^22.0.0",
     "@vitest/coverage-v8": "^2.1.0",
+    "esbuild": "^0.28.2",
     "publint": "^0.3.0",
     "tinyglobby": "^0.2.0",
     "tsdown": "^0.23.0",

@@ -70,7 +70,7 @@ export default defineConfig({
         {
           text: 'Guides',
           collapsed: false,
-          items: [{ text: 'Query string contract', link: '/usage/query-strings' }],
+          items: [{ text: 'Query strings', link: '/usage/query-strings' }],
         },
         {
           text: 'Development',
