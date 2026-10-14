@@ -121,6 +121,9 @@
       "string/questionmark": [
         "./string/questionmark.d.ts"
       ],
+      "string/random-string": [
+        "./string/random-string.d.ts"
+      ],
       "string/template": [
         "./string/template.d.ts"
       ],
@@ -236,6 +239,10 @@
     "./string/questionmark": {
       "types": "./string/questionmark.d.ts",
       "default": "./string/questionmark.js"
+    },
+    "./string/random-string": {
+      "types": "./string/random-string.d.ts",
+      "default": "./string/random-string.js"
     },
     "./string/template": {
       "types": "./string/template.d.ts",
