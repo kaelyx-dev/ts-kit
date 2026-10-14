@@ -52,8 +52,6 @@ Feature-PRs based on the roadmap will take priority.
 
 ### Object
 - invert
-- omit
-- pick
 - rename-keys
 
 ### Number
