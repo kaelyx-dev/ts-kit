@@ -1,5 +1,16 @@
 # @kaelyx/ts-kit
 
+## 0.7.0
+
+### Minor Changes
+
+- 315e81f: Added randomString function that makes cryptographically secure random strings from preset or custom character sets
+- 078eb3b: Added Array Sum Function that allows for primitive number arrays and object arrays with keys that are typed to number
+
+### Patch Changes
+
+- 6fc0cbd: Updated readme to include download statistics shield and update the roadmap doc
+
 ## 0.6.2
 
 ### Patch Changes
