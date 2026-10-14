@@ -25,7 +25,6 @@ Feature-PRs based on the roadmap will take priority.
 - sample
 - partition
 - group-by
-- sum/by
 - average/by
 - mean/by
 - median/by
@@ -34,28 +33,25 @@ Feature-PRs based on the roadmap will take priority.
 - min/by
 
 ### String 
-- truncate
-- random-string
 - camel-case
 - snake-case
 - kebab-case
 - pascal-case
 - title-case
 - capitalise
-- template
 - pluralise
-- signularise
+- singularise
 - word-count
 - validate
 - valid-email
 - valid-uk-postcode
+- slugify
 
 ### Object
 - invert
 - rename-keys
 
 ### Number
-- clamp
 - random-int
 - random-float
 - format
