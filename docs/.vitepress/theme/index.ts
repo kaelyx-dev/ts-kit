@@ -1,6 +1,7 @@
-import { h } from 'vue'
-import DefaultTheme from 'vitepress/theme'
+/// <reference types="vite/client" />
 import type { Theme } from 'vitepress'
+import DefaultTheme from 'vitepress/theme'
+import { h } from 'vue'
 import VersionBadge from '../components/VersionBadge.vue'
 import './custom.css'
 
