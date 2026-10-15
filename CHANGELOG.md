@@ -1,5 +1,11 @@
 # @kaelyx/ts-kit
 
+## 0.9.2
+
+### Patch Changes
+
+- deb8065: Added version and changelog to vitepress homepage
+
 ## 0.9.1
 
 ### Patch Changes
