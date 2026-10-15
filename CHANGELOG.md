@@ -1,5 +1,16 @@
 # @kaelyx/ts-kit
 
+## 0.9.0
+
+### Minor Changes
+
+- c1e9362: Updated barrel exports to allow for `as const` enums in type files to also be exported for use in the export tree
+
+### Patch Changes
+
+- ad2e6ae: **Fix:** `RandomStringCharset`, `SumOptionsMissingBehaviour`, `ClampUndefinedBehaviour`, `TemplateOptionsReplaceBehaviour` and `TemplateOptionsUnknownBehaviour` are now exported as values from `@kaelyx/ts-kit`, from their category (for example `@kaelyx/ts-kit/string`) and from their function subpath (for example `@kaelyx/ts-kit/string/random-string`). Before, these entry points exported them only as types, so code such as `randomString({ charset: RandomStringCharset.hex })` failed at run time. They were available as values only from `@kaelyx/ts-kit/types`.
+- c1e9362: Updated Vitepress Documentation to add a Playground Sandbox, this includes @Playground and @PlaygroundExclude flags to tsdoc comments. This uses sandpack-vue3 to host and get the npm package.
+
 ## 0.8.0
 
 ### Minor Changes
