@@ -1,5 +1,11 @@
 # @kaelyx/ts-kit
 
+## 0.9.3
+
+### Patch Changes
+
+- 7c47a38: Improved examples and documentation
+
 ## 0.9.2
 
 ### Patch Changes
