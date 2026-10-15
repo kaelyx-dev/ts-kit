@@ -1,7 +1,7 @@
 import { withDefaults } from '../../object/with-defaults/with-defaults'
 import type { DebounceHandler, DebounceOptions } from './debounce.types'
 
-export type * from './debounce.types'
+export * from './debounce.types'
 
 /**
  * Delays a function until `debounceMs` milliseconds have passed since the last call. Only the
@@ -22,6 +22,12 @@ export type * from './debounce.types'
  *
  * save('a')
  * save('ab') // Only this call runs, 300ms after it was made
+ * ```
+ *
+ * @playground
+ * ```ts
+ * const save = debounce((value: string) => console.log('saved', value), { debounceMs: 300 })
+ * for (const value of ['a', 'ab', 'abc']) save(value) // Only the last call runs: saved abc
  * ```
  *
  * @category function

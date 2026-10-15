@@ -1,4 +1,4 @@
-export type * from './exclamationmark.types'
+export * from './exclamationmark.types'
 import { createPunctuationReplacer } from '../../_internal/string/punctuationReplacer/punctuationReplacer'
 import type { ExclamationmarkOptions } from './exclamationmark.types'
 

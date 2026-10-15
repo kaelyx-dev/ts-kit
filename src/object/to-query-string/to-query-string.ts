@@ -1,4 +1,4 @@
-export type * from './to-query-string.types'
+export * from './to-query-string.types'
 import type { ToQueryStringInput, ToQueryStringValue } from './to-query-string.types'
 
 function toText(value: Exclude<ToQueryStringValue, undefined>): string {

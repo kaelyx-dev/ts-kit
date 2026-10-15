@@ -5,7 +5,7 @@ import type {
   DebounceWithAbortOptions,
 } from './debounce-with-abort.types'
 
-export type * from './debounce-with-abort.types'
+export * from './debounce-with-abort.types'
 
 /** The state of one call. Each call keeps its own record, so a stale call cannot change a newer one. */
 interface Call<R> {
@@ -41,6 +41,22 @@ const isAbortError = (error: unknown): boolean =>
  *   { debounceMs: 300, shouldRun: (query) => query.length > 2 },
  * )
  * input.addEventListener('input', () => search(input.value))
+ * ```
+ *
+ * @playground
+ * ```ts
+ * const search = debounceWithAbort(
+ *   (signal, query: string) =>
+ *     new Promise<string>((resolve) => {
+ *       const timer = setTimeout(() => resolve(`results for "${query}"`), 200)
+ *       signal.addEventListener('abort', () => clearTimeout(timer))
+ *     }),
+ *   { debounceMs: 100, shouldRun: (query) => query.length > 2 },
+ * )
+ *
+ * Promise.all([search('ty'), search('typ'), search('type')]).then((results) => {
+ *   console.log(results) // [undefined, undefined, 'results for "type"']
+ * })
  * ```
  *
  * @category function

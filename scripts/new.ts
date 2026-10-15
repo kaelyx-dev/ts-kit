@@ -54,7 +54,7 @@ const prompt = async (question: string): Promise<string> => {
 
 const functionTemplate = (category: string, name: string): string => {
   const exportName = kebabToCamel(name)
-  return `export type * from './${name}.types'
+  return `export * from './${name}.types'
 
 /**
  * One sentence that says what the function does.

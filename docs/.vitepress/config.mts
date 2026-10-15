@@ -63,6 +63,7 @@ export default defineConfig({
       { text: 'Guides', link: '/usage/query-strings' },
       { text: 'Development', link: '/guide/getting-started' },
       { text: 'API', link: '/api/' },
+      { text: 'Playground', link: '/playground' },
     ],
     sidebar: {
       '/api/': apiSidebar,

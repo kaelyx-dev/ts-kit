@@ -1,4 +1,4 @@
-export type * from './err.types'
+export * from './err.types'
 
 import type { Result } from '../../types/result/result.types'
 

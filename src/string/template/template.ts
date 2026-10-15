@@ -5,7 +5,7 @@ import {
   TemplateOptionsUnknownBehaviour,
 } from './template.types'
 
-export type * from './template.types'
+export * from './template.types'
 
 /**
  * Replaces the placeholders in a string with values from `variables`.

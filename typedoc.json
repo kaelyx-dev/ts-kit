@@ -12,5 +12,16 @@
   "navigation": {
     "includeCategories": true,
     "includeGroups": false
-  }
+  },
+  "excludeTags": [
+    "@override",
+    "@virtual",
+    "@privateRemarks",
+    "@satisfies",
+    "@overload",
+    "@inline",
+    "@inlineType",
+    "@playground",
+    "@playgroundExclude"
+  ]
 }

@@ -1,4 +1,4 @@
-export type * from './questionmark.types'
+export * from './questionmark.types'
 import { createPunctuationReplacer } from '../../_internal/string/punctuationReplacer/punctuationReplacer'
 import type { QuestionmarkOptions } from './questionmark.types'
 

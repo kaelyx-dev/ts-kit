@@ -5,7 +5,7 @@ import {
   SumOptionsMissingBehaviour,
 } from './sum.types'
 
-export type * from './sum.types'
+export * from './sum.types'
 
 /**
  * Adds all the numbers in an array.
