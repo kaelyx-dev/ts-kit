@@ -2,6 +2,8 @@ export * from './fullstop.types'
 import { createPunctuationReplacer } from '../../_internal/string/punctuationReplacer/punctuationReplacer'
 import type { FullstopOptions } from './fullstop.types'
 
+const addPunctuation = /* @__PURE__ */ createPunctuationReplacer('.')
+
 /**
  * Ensures that the input string ends with a full stop (period).
  *
@@ -17,5 +19,5 @@ import type { FullstopOptions } from './fullstop.types'
  * @category string
  */
 export function fullstop(input: string, options?: FullstopOptions): string {
-  return createPunctuationReplacer('.')(input, options)
+  return addPunctuation(input, options)
 }

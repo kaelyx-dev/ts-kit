@@ -1,15 +1,9 @@
 /**
  * Types, constants and defaults for the punctuation replacer.
- *
- * Every export carries an explicit type annotation so the module satisfies
- * `isolatedDeclarations`.
  */
 
-/** The punctuation characters supported out of the box. */
+/** The set of punctuation characters recognized by the replacer. */
 export const PUNCTUATION_CHARACTERS = ['.', '!', '?'] as const
-
-/** One of the built-in punctuation characters. */
-export type PunctuationCharacter = (typeof PUNCTUATION_CHARACTERS)[number]
 
 /** Trailing whitespace, including Unicode spaces, for the `trim` option. */
 export const TRAILING_WHITESPACE: RegExp = /\s+$/u

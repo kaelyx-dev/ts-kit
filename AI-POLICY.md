@@ -9,7 +9,8 @@ every issue.
 - You can use an AI assistant. We do not restrict which one.
 - You own the result. You must be able to explain every line that you submit.
 - You must supply tests. A change without good test coverage is not ready.
-- Keep the code simple. A person must understand the code on the first read.
+- Try to keep the code simple. Ideally, a person understands the code on the
+  first read.
 - Do not open an issue or a PR that you did not read first.
 
 ## Rule 1. You can use an AI assistant
@@ -50,10 +51,7 @@ Each PR must meet these conditions:
 | Coverage does not fall | The change does not leave less of the code under test than before |
 | The tests read as a specification | A person reads the test names and learns what the code does |
 
-We set no percentage target for coverage. A percentage rewards a test that runs
-the code without a check of the result. The reviewer judges whether the tests
-cover the change. If the reviewer asks for more tests, the reviewer states
-which behaviour needs a test.
+The coverage threshold is 100% for lines, branches, functions and statements in src/. Type files (*.types.ts) and barrel files (index.ts) are not measured. The CI pipeline runs the tests with coverage and fails if coverage is less than 100%. You can test yourself before contributing by running `npm run test -- --coverage`.
 
 Do not use an AI assistant to write a test that repeats the shape of the
 implementation. A test of that type passes for the wrong reason. Write the test
@@ -64,18 +62,20 @@ from the behaviour that the user needs.
 A reviewer reads the code more times than the author writes it. Simple code is
 therefore the cheaper code. This is true even when the simple code is longer.
 
-Follow these rules:
+We recommend these guidelines. They are not strict rules. If you have a good
+reason to do something different, tell us in the PR description.
 
-- Write short functions. One function does one thing.
-- Use names that state what the code does.
-- Do not add an abstraction for one caller.
-- Do not add a dependency without a reason in the PR description.
-- Write a comment for the reason, not for the mechanism.
-- Delete the code that no caller uses.
+- Try to keep functions short, so that each function does one thing.
+- Where possible, use names that state what the code does.
+- Think carefully before you add an abstraction that has only one caller.
+- This library attempts to be dependency free, please heavily consider whether a new dependency is truly necessary before adding it.
+- Where possible, write a comment for the reason, not for the mechanism.
+- Consider removing code that no caller uses.
 
 An AI assistant often produces more structure than the task needs. Examples are
 a configuration option that nobody sets, a class with one method, and an error
-type that no caller catches. Remove these before you submit the PR.
+type that no caller catches. We suggest that you remove these before you submit
+the PR.
 
 ## Rule 5. Tell us where the AI assistant helped
 
@@ -173,10 +173,7 @@ developer experience (DX) features:
 - The pre-commit hooks.
 - The test harness and the coverage report.
 - The editor and container configuration.
-- Parts of this documentation.
-
-A maintainer read each of these files, ran them, and changed them before we
-merged them. The rules in this policy applied to that work.
+- Parts of this documentation, documention generations and the playground implementation .
 
 We state this for two reasons. The first reason is that you can see how the
 tools in this repository came to exist. The second reason is that this policy
