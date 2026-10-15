@@ -1,5 +1,11 @@
 # @kaelyx/ts-kit
 
+## 0.9.1
+
+### Patch Changes
+
+- 75aa5c4: Refactor `debounceWithAbort` to use an internal deferred promise helper, and tidy the punctuation helpers (`fullstop`, `questionmark`, `exclamationmark`) to comply with the updated AI policy.
+
 ## 0.9.0
 
 ### Minor Changes
