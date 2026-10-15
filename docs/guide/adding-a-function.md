@@ -45,12 +45,26 @@ Fill in `<name>.ts`. Follow the signature rules:
 Every export needs one TSDoc block with `@param`, `@returns`, an `@example`, and a `@category`
 tag. `npm run docs:check` fails the build if a tag is missing.
 
+The [playground](/playground) runs the `@example` code in a browser. Each line that is an
+expression is wrapped in `console.log`, and a line with a `// throws` comment logs its error. If
+the example cannot run in a browser, for example because it uses an element on a page or a
+relative URL, use one of these tags. The API pages do not show them.
+
+- `@playground`: browser-safe code that the playground uses instead of `@example`. Write it in a
+  code fence, as for `@example`.
+- `@playgroundExclude`: removes the function from the playground.
+
 ## 4. Write the types
 
 Fill in `<name>.types.ts`. Every exported type name must start with the PascalCase form of the
 function name (for example, `TruncateOptions` for `truncate`). This is required so the
 `@kaelyx/ts-kit/types` barrel has no name collisions: `scripts/barrels.ts` checks this and stops
 with an error if two functions export a type with the same name.
+
+The same rule applies to a value in the types file, such as an `as const` object of option values
+(for example, `RandomStringCharset`). The function file re-exports the types file with
+`export * from`, so the value is available from the package root, the category and the function
+subpath.
 
 If the type is useful on its own, or more than one function needs it, make it a standalone type
 instead. See [Adding a type](/guide/adding-a-type).

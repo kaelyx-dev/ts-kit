@@ -287,6 +287,7 @@
     "@vitest/coverage-v8": "^2.1.0",
     "esbuild": "^0.28.2",
     "publint": "^0.3.0",
+    "sandpack-vue3": "^3.1.12",
     "tinyglobby": "^0.2.0",
     "tsdown": "^0.23.0",
     "tsx": "^4.19.0",
