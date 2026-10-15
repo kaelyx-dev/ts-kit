@@ -1,4 +1,14 @@
+/// <reference types="vite/client" />
+import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
+import { h } from 'vue'
+import VersionBadge from '../components/VersionBadge.vue'
 import './custom.css'
 
-export default DefaultTheme
+export default {
+  extends: DefaultTheme,
+  Layout: () =>
+    h(DefaultTheme.Layout, null, {
+      'home-hero-actions-after': () => h(VersionBadge),
+    }),
+} satisfies Theme

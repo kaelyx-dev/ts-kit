@@ -95,7 +95,10 @@ export default defineConfig({
         },
       ],
     },
-    socialLinks: [{ icon: 'github', link: 'https://github.com/kaelyx-dev/ts-kit' }],
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/kaelyx-dev/ts-kit' },
+      { icon: 'npm', link: 'https://www.npmjs.com/package/@kaelyx/ts-kit' },
+    ],
     search: {
       provider: 'local',
     },
