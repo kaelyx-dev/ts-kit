@@ -14,6 +14,9 @@ export * from './omit.types'
  * @example
  * ```ts
  * omit({ a: 1, b: 2 }, ['a']) // result: { b: 2 }
+ * omit({ a: 1, b: 2, c: 3 }, ['a', 'c']) // result: { b: 2 }
+ * omit({ a: 1, b: undefined }, ['b']) // result: { a: 1 }
+ * omit({ a: 1, b: 2 }, []) // result: { a: 1, b: 2 }
  * ```
  *
  * @category object

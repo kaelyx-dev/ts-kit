@@ -13,6 +13,9 @@ import { parseJson } from '../parse-json/parse-json'
  * ```ts
  * isJson('{"name": "John"}') // true
  * isJson('not json') // false
+ * isJson('42') // true
+ * isJson("{'name': 'John'}") // false
+ * isJson('') // false
  * ```
  *
  * @category string

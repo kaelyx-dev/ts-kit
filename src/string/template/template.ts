@@ -17,12 +17,17 @@ export * from './template.types'
  * @param variables - The values to use. Each value is converted with `String()`.
  * @param options - How to replace placeholders and what to do with unknown placeholders.
  * @returns A new string with the placeholders replaced.
- * @throws If `unknownBehaviour` is `'throw'` and the input contains an unknown placeholder.
+ * @throws If `unknownBehaviour` is `TemplateOptionsUnknownBehaviour.throw` and the input contains an unknown placeholder.
  *
  * @example
  * ```ts
  * template('Hello, {{name}}!', { name: 'Ada' }) // 'Hello, Ada!'
- * template('{{a}} {{b}}', { a: 1 }, { unknownBehaviour: 'remove' }) // '1 '
+ * template('{{count}} items, in stock: {{inStock}}', { count: 3, inStock: true }) // '3 items, in stock: true'
+ * template('{{a}} {{b}}', { a: 1 }) // '1 {{b}}'
+ * template('{{a}} {{b}}', { a: 1 }, { unknownBehaviour: TemplateOptionsUnknownBehaviour.remove }) // '1 '
+ * template('{{a}}', {}, { unknownBehaviour: TemplateOptionsUnknownBehaviour.throw }) // throws Error
+ * template('{{a}} {{a}}', { a: 1 }, { replaceBehaviour: TemplateOptionsReplaceBehaviour.replaceFirst }) // '1 {{a}}'
+ * template('Hello, ${name}!', { name: 'Ada' }, { placeholderPattern: /\$\{(\w+)\}/ }) // 'Hello, Ada!'
  * ```
  *
  * @category string

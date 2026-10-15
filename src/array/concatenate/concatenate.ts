@@ -14,6 +14,8 @@ export * from './concatenate.types'
  * ```ts
  * concatenate([1, 2], [3])                     // [1, 2, 3]
  * concatenate([1, 2], [2, 3], { unique: true }) // [1, 2, 3]
+ * concatenate([1, 1, 2], [2, 3], { unique: true }) // [1, 2, 3]
+ * concatenate(['a'], [])                        // ['a']
  * ```
  *
  * @category array

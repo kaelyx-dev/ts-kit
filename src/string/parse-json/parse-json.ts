@@ -14,6 +14,9 @@ import type { Result } from '../../types/result/result.types'
  * ```ts
  * parseJson('{"key": "value"}') // { ok: true, value: { key: 'value' } }
  * parseJson('invalid json') // { ok: false, error: SyntaxError }
+ * parseJson('[1, 2, 3]') // { ok: true, value: [1, 2, 3] }
+ * parseJson('null') // { ok: true, value: null }
+ * parseJson('') // { ok: false, error: SyntaxError }
  * ```
  *
  * @category string
