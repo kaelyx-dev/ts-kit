@@ -35,7 +35,7 @@ export function sum(array: readonly number[], options?: SumNumberOptions): numbe
  * @example
  * ```ts
  * sum([{ price: 2 }, { price: 3 }], { key: 'price' }) // 5
- * sum([{ price: 2 }, {}], { key: 'price', missingBehaviour: 'ZERO' }) // 2
+ * sum([{ price: 2 }, {}], { key: 'price', missingBehaviour: SumOptionsMissingBehaviour.zero }) // 2
  * ```
  *
  * @category array

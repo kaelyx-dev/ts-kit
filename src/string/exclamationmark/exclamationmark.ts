@@ -14,6 +14,11 @@ const addPunctuation = /* @__PURE__ */ createPunctuationReplacer('!')
  * @example
  * ```ts
  * exclamationmark('watch out') // 'watch out!'
+ * exclamationmark('watch out.') // 'watch out!'
+ * exclamationmark('no way?.') // 'no way!'
+ * exclamationmark('no way?.', { collapse: false }) // 'no way?!'
+ * exclamationmark('watch out   ', { trim: false }) // 'watch out   !'
+ * exclamationmark('', { skipEmpty: false }) // '!'
  * ```
  *
  * @category string

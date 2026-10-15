@@ -14,6 +14,14 @@ const addPunctuation = /* @__PURE__ */ createPunctuationReplacer('.')
  * @example
  * ```ts
  * fullstop('hello') // 'hello.'
+ * fullstop('hello!') // 'hello.'
+ * fullstop('What?!') // 'What.'
+ * fullstop('What?!', { collapse: false }) // 'What?.'
+ * fullstop('hello   ') // 'hello.'
+ * fullstop('hello   ', { trim: false }) // 'hello   .'
+ * fullstop('') // ''
+ * fullstop('', { skipEmpty: false }) // '.'
+ * fullstop('a list;', { replacementCharacters: [';'] }) // 'a list.'
  * ```
  *
  * @category string

@@ -20,6 +20,10 @@ const MAX_BATCH = 65536 / Uint32Array.BYTES_PER_ELEMENT
  * randomString() // 'f3Kq9ZbT0xLmA2pR'
  * randomString({ length: 8, charset: RandomStringCharset.hex }) // '9c4e01ab'
  * randomString({ charset: RandomStringCharset.uppercase + RandomStringCharset.digits }) // 'Q7ZK2M9XA0B4TR1C'
+ * randomString({ length: 6, charset: 'ab' }) // 'babbab'
+ * randomString({ length: 0 }) // ''
+ * randomString({ length: -1 }) // throws RangeError
+ * randomString({ charset: '' }) // throws RangeError
  * ```
  *
  * @category string

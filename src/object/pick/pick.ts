@@ -14,6 +14,9 @@ export * from './pick.types'
  * @example
  * ```ts
  * pick({ a: 1, b: 2 }, ['a']) // result: { a: 1 }
+ * pick({ a: 1, b: 2, c: 3 }, ['a', 'c']) // result: { a: 1, c: 3 }
+ * pick({ a: 1, b: undefined }, ['b']) // result: { b: undefined }
+ * pick({ a: 1, b: 2 }, []) // result: {}
  * ```
  *
  * @category object

@@ -19,6 +19,9 @@ import type { FromQueryStringResult } from './from-query-string.types'
  * fromQueryString('q=red+shoes&page=2') // { q: 'red shoes', page: '2' }
  * fromQueryString('?tags=new&tags=sale') // { tags: ['new', 'sale'] }
  * fromQueryString('a=') // { a: '' }
+ * fromQueryString('name=Ada%20Lovelace') // { name: 'Ada Lovelace' }
+ * fromQueryString('a.b=1') // { 'a.b': '1' }
+ * fromQueryString('') // {}
  * ```
  *
  * @category object

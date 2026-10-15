@@ -22,7 +22,7 @@ export * from './clamp.types'
  * clamp(15, { min: 1, max: 10 }) // 10
  * clamp(NaN, { min: 1, max: 10 }) // NaN
  * clamp(NaN, { min: 1, max: 10, strict: true }) // undefined
- * clamp(NaN, { min: 1, max: 10, strict: true, strictBehaviour: 'clamp-to-lowest' }) // 1
+ * clamp(NaN, { min: 1, max: 10, strict: true, strictBehaviour: ClampUndefinedBehaviour.CLAMP_TO_LOWEST }) // 1
  * clamp(5, { min: 10, max: 1 }) // throws RangeError
  * ```
  *

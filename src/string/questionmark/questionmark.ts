@@ -14,6 +14,12 @@ const addPunctuation = /* @__PURE__ */ createPunctuationReplacer('?')
  * @example
  * ```ts
  * questionmark('are you sure') // 'are you sure?'
+ * questionmark('are you sure.') // 'are you sure?'
+ * questionmark('really!.') // 'really?'
+ * questionmark('really!.', { collapse: false }) // 'really!?'
+ * questionmark('are you sure   ', { trim: false }) // 'are you sure   ?'
+ * questionmark('', { skipEmpty: false }) // '?'
+ * questionmark('really:', { replacementCharacters: [':'] }) // 'really?'
  * ```
  *
  * @category string
