@@ -2,6 +2,8 @@ export * from './exclamationmark.types'
 import { createPunctuationReplacer } from '../../_internal/string/punctuationReplacer/punctuationReplacer'
 import type { ExclamationmarkOptions } from './exclamationmark.types'
 
+const addPunctuation = /* @__PURE__ */ createPunctuationReplacer('!')
+
 /**
  * Ensures that the input string ends with an exclamation mark.
  *
@@ -17,5 +19,5 @@ import type { ExclamationmarkOptions } from './exclamationmark.types'
  * @category string
  */
 export function exclamationmark(input: string, options?: ExclamationmarkOptions): string {
-  return createPunctuationReplacer('!')(input, options)
+  return addPunctuation(input, options)
 }

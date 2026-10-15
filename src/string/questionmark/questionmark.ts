@@ -2,6 +2,8 @@ export * from './questionmark.types'
 import { createPunctuationReplacer } from '../../_internal/string/punctuationReplacer/punctuationReplacer'
 import type { QuestionmarkOptions } from './questionmark.types'
 
+const addPunctuation = /* @__PURE__ */ createPunctuationReplacer('?')
+
 /**
  * Ensures that the input string ends with a question mark.
  *
@@ -17,5 +19,5 @@ import type { QuestionmarkOptions } from './questionmark.types'
  * @category string
  */
 export function questionmark(input: string, options?: QuestionmarkOptions): string {
-  return createPunctuationReplacer('?')(input, options)
+  return addPunctuation(input, options)
 }
