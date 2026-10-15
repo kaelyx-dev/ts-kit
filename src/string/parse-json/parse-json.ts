@@ -1,4 +1,4 @@
-export type * from './parse-json.types'
+export * from './parse-json.types'
 
 import { err, ok } from '../../result'
 import type { Result } from '../../types/result/result.types'

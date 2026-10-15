@@ -1,6 +1,6 @@
 import type { WithDefaults } from '../..'
 
-export type * from './with-defaults.types'
+export * from './with-defaults.types'
 
 /**
  * Adds default values to an options object. If a key in `input` is `undefined`,
@@ -13,6 +13,13 @@ export type * from './with-defaults.types'
  * @example
  * ```ts
  * const opts = withDefaults(options, { retries: 3 }); // opts.retries: number
+ * ```
+ *
+ * @playground
+ * ```ts
+ * const options: { retries?: number; delayMs?: number } = { delayMs: undefined }
+ * withDefaults(options, { retries: 3, delayMs: 100 }) // { retries: 3, delayMs: 100 }
+ * withDefaults({ retries: 5 }, { retries: 3 }) // { retries: 5 }
  * ```
  *
  * @category object

@@ -1,6 +1,6 @@
 import type { ConcatenateOptions } from './concatenate.types'
 
-export type * from './concatenate.types'
+export * from './concatenate.types'
 
 /**
  * Joins two arrays into one new array.

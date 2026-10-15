@@ -1,4 +1,4 @@
-export type * from './from-query-string.types'
+export * from './from-query-string.types'
 import type { FromQueryStringResult } from './from-query-string.types'
 
 /**

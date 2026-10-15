@@ -1,4 +1,4 @@
-export type * from './omit.types'
+export * from './omit.types'
 
 /**
  * Creates a new object by copying the source object without the specified keys.

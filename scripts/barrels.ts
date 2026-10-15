@@ -53,7 +53,9 @@ const rootBarrel = (): string => {
   return `${GENERATED_HEADER}${lines.join('\n')}${lines.length > 0 ? '\n' : ''}`
 }
 
-const exportNamePattern = /export\s+(?:type|interface)\s+([A-Za-z0-9_]+)/g
+// Covers value exports too, such as the `as const` objects that function options take.
+const exportNamePattern =
+  /export\s+(?:type|interface|const|let|enum|function|class)\s+([A-Za-z0-9_]+)/g
 
 // Every exported type name must start with the PascalCase form of its folder name, and no name
 // may be exported twice, so the types barrel can never have a collision.
@@ -74,8 +76,9 @@ const checkTypeNames = (typesPath: string, folderName: string, seen: Map<string,
     if (!typeName.startsWith(expectedPrefix)) {
       throw new Error(`Type "${typeName}" in ${typesPath} must start with "${expectedPrefix}".`)
     }
+    // A const and a type can share a name in one file, as a value and its type.
     const existing = seen.get(typeName)
-    if (existing !== undefined) {
+    if (existing !== undefined && existing !== typesPath) {
       throw new Error(
         `Type name collision: "${typeName}" is exported from both ${existing} and ${typesPath}.`,
       )

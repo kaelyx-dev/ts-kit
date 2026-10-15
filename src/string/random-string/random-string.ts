@@ -1,7 +1,7 @@
 import { withDefaults } from '../../object'
 import { RandomStringCharset, type RandomStringOptions } from './random-string.types'
 
-export type * from './random-string.types'
+export * from './random-string.types'
 
 const RANGE = 2 ** 32
 // getRandomValues fills at most 65536 bytes per call.

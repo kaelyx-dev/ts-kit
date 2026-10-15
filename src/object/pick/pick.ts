@@ -1,4 +1,4 @@
-export type * from './pick.types'
+export * from './pick.types'
 
 /**
  * Creates a new object by picking the specified keys from the source object.

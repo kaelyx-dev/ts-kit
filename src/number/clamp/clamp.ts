@@ -1,7 +1,7 @@
 import { type ClampOptions, withDefaults } from '../..'
 import { ClampUndefinedBehaviour } from './clamp.types'
 
-export type * from './clamp.types'
+export * from './clamp.types'
 
 /**
  * Clamps a number within the specified minimum and maximum bounds.

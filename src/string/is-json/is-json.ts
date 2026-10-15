@@ -1,4 +1,4 @@
-export type * from './is-json.types'
+export * from './is-json.types'
 import { parseJson } from '../parse-json/parse-json'
 
 /**

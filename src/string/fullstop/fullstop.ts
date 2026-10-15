@@ -1,4 +1,4 @@
-export type * from './fullstop.types'
+export * from './fullstop.types'
 import { createPunctuationReplacer } from '../../_internal/string/punctuationReplacer/punctuationReplacer'
 import type { FullstopOptions } from './fullstop.types'
 

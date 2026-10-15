@@ -1,4 +1,4 @@
-export type * from './unwrap-or.types'
+export * from './unwrap-or.types'
 
 import type { Result } from '../../types/result/result.types'
 

@@ -1,7 +1,7 @@
 import { takeGraphemes } from '../../_internal/string/graphemes/graphemes'
 import type { TruncateOptions } from './truncate.types'
 
-export type * from './truncate.types'
+export * from './truncate.types'
 
 const graphemeSegmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' })
 const whitespace = /\s/u
