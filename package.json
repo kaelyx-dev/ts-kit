@@ -106,6 +106,9 @@
       "string": [
         "./string.d.ts"
       ],
+      "string/convert-case": [
+        "./string/convert-case.d.ts"
+      ],
       "string/exclamationmark": [
         "./string/exclamationmark.d.ts"
       ],
@@ -219,6 +222,10 @@
     "./string": {
       "types": "./string.d.ts",
       "default": "./string.js"
+    },
+    "./string/convert-case": {
+      "types": "./string/convert-case.d.ts",
+      "default": "./string/convert-case.js"
     },
     "./string/exclamationmark": {
       "types": "./string/exclamationmark.d.ts",
