@@ -1,6 +1,6 @@
 {
   "name": "@kaelyx/ts-kit",
-  "version": "0.9.3",
+  "version": "0.10.0",
   "description": "Small TypeScript utility functions.",
   "license": "MIT",
   "type": "module",
